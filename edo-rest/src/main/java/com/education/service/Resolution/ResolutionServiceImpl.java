@@ -1,7 +1,6 @@
-package com.education.service;
+package com.education.service.Resolution;
 
-import com.education.model.dto.AppealDto;
-import com.education.model.enumEntity.EnumAppealStatus;
+import com.education.model.dto.ResolutionDto;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import lombok.RequiredArgsConstructor;
@@ -19,15 +18,11 @@ import java.util.List;
 @Log4j2
 @Service
 @RequiredArgsConstructor
-public class CreatingAppealServiceImpl implements CreatingAppealService {
+public class ResolutionServiceImpl implements ResolutionService{
 
     private final RestTemplate TEMPLATE;
-
     private final EurekaClient EUREKA_CLIENT;
-    private final EnumAppealStatus STATUS_FOR_NEW_APPEAL = EnumAppealStatus.NEW;
-
-    private final String BASE_URL = "/api/service/appeal";
-
+    private final String BASE_URL = "/api/service/resolution";
     private final String SERVICE_NAME = "edo-service";
 
     private InstanceInfo getInstance() {
@@ -51,13 +46,10 @@ public class CreatingAppealServiceImpl implements CreatingAppealService {
     }
 
     @Override
-    public AppealDto createAppeal(AppealDto appealDto) {
+    public ResolutionDto save(ResolutionDto resolutionDto) {
         InstanceInfo instanceInfo = getInstance();
-        appealDto.setAppealStatus(STATUS_FOR_NEW_APPEAL);
-        var request = new RequestEntity(appealDto, HttpMethod.POST, getURIByInstance(instanceInfo, ""));
-
-        var response = TEMPLATE.exchange(request, AppealDto.class);
-
+        var request = new RequestEntity(resolutionDto, HttpMethod.POST, getURIByInstance(instanceInfo, ""));
+        var response = TEMPLATE.exchange(request, ResolutionDto.class);
         return response.getBody();
     }
 }

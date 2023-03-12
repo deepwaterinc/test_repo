@@ -4,8 +4,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @ApiModel("Класс QuestionDto - DTO для Question.class")
 @NoArgsConstructor
@@ -26,7 +26,10 @@ public class QuestionDto {
     @ApiModelProperty("Краткое содержание обращения")
     private String summary;
 
-    private ResolutionDto resolution;
+    @ApiModelProperty("Список резолюций по вопросу")
+    private List<ResolutionDto> resolutions;
 
+    @ApiModelProperty("Тема, к которой относится вопрос")
     private ThemeDto theme;
+
 }

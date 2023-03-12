@@ -54,9 +54,6 @@ public class AppealDto {
     @ApiModelProperty("Вопросы, связанные с обращением")
     private List<QuestionDto> question;
 
-    @ApiModelProperty("Резолюция по обращению")
-    private ResolutionDto resolution;
-
     @ApiModelProperty("Тема обращения")
     private ThemeDto theme;
 

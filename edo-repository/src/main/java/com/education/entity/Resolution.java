@@ -1,11 +1,9 @@
 package com.education.entity;
 
 import com.education.model.enumEntity.EnumResolution;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -19,7 +17,6 @@ import java.util.List;
 @Getter
 @Setter
 @SuperBuilder
-@ToString
 @Table(name = "resolution")
 public class Resolution extends BaseEntity {
 
@@ -77,4 +74,13 @@ public class Resolution extends BaseEntity {
     @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "curator_id")
     private Employee curator;
+
+    /**
+     * Вопрос, к которому относится резолюция
+     * У одного вопроса может быть несколько резолюций
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_id")
+    private Question question;
+
 }

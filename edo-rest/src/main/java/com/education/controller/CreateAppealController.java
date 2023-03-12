@@ -1,7 +1,7 @@
 package com.education.controller;
 
 import com.education.model.dto.AppealDto;
-import com.education.service.CreatingAppealService;
+import com.education.service.Appeal.CreatingAppealService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

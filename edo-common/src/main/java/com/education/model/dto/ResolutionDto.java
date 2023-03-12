@@ -4,7 +4,6 @@ import com.education.model.enumEntity.EnumResolution;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
-
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -14,7 +13,6 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@ToString
 public class ResolutionDto {
 
     @ApiModelProperty("Id резолюции")
@@ -43,4 +41,8 @@ public class ResolutionDto {
 
     @ApiModelProperty("Работник курирующий работу")
     private EmployeeDto curator;
+
+    @ApiModelProperty("Вопрос, к которому относится резолюция")
+    private QuestionDto question;
+
 }

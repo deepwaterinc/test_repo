@@ -20,9 +20,6 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "appeal")
-/**
- *  Класс "Обращения"
- */
 public class Appeal extends BaseEntity {
 
     /**
@@ -108,13 +105,6 @@ public class Appeal extends BaseEntity {
             joinColumns = @JoinColumn(name = "appeal_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "question_id", referencedColumnName = "id"))
     private List<Question> question;
-
-    /**
-     * Резолюция по обращению
-     */
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "resolution_id")
-    private Resolution resolution;
 
 
     /**

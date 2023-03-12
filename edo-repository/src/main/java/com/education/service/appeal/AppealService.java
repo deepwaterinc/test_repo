@@ -17,4 +17,6 @@ public interface AppealService {
     Appeal findByIdNotArchived(Long id);
 
     List<Appeal> findAllByIdNotArchived(Iterable<Long> ids);
+
+    void moveToUnderConsideration(Long id);
 }
