@@ -88,4 +88,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void moveToArchive(Long id) {
         employeeRepository.moveToArchive(id);
     }
+
+    /**
+     * Метод, производящий поиск в таблице сущностей Employee по введенным символам
+     * @param fio
+     * @return
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<Employee> findAllByLastNameLikeOrderByLastName(String fio) {
+        return fio.length() < 3 ? null : employeeRepository.findAllByLastNameLikeOrderByLastName(fio);
+    }
 }
