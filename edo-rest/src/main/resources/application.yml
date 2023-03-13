@@ -2,10 +2,12 @@ spring:
   application:
     name: edo-rest
 server:
-  port: 0
+  port: 8080
 eureka:
   client:
     serviceUrl:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
   instance:
     preferIpAddress: true
+
+

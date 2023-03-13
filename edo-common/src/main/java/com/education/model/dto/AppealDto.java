@@ -54,9 +54,6 @@ public class AppealDto {
     @ApiModelProperty("Вопросы, связанные с обращением")
     private List<QuestionDto> question;
 
-    @ApiModelProperty("Тема обращения")
-    private ThemeDto theme;
-
     @ApiModelProperty("Статус обращения")
     private EnumAppealStatus appealStatus;
 

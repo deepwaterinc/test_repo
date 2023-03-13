@@ -1,0 +1,2 @@
+ALTER TABLE IF EXISTS appeal
+    DROP COLUMN IF EXISTS theme_id;

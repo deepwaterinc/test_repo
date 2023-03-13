@@ -1,8 +1,6 @@
 package com.education.service;
 
-import com.education.model.dto.AppealAbbreviatedDto;
-import com.education.model.dto.AppealDto;
-import com.education.model.enumEntity.EnumAppealStatus;
+import com.education.model.dto.NomenclatureDto;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import lombok.RequiredArgsConstructor;
@@ -11,24 +9,20 @@ import org.apache.http.HttpHost;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import java.net.URI;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.apache.commons.lang.StringUtils.EMPTY;
 
-@Log4j2
 @Service
+@Log4j2
 @RequiredArgsConstructor
-public class CreatingAppealServiceImpl implements CreatingAppealService {
-
+public class NomenclatureServiceImpl implements NomenclatureService {
     private final RestTemplate TEMPLATE;
 
     private final EurekaClient EUREKA_CLIENT;
-    private final EnumAppealStatus STATUS_FOR_NEW_APPEAL = EnumAppealStatus.NEW;
 
-    private final String BASE_URL = "/api/service/appeal";
+    private final String BASE_URL = "/api/service/nomenclature";
 
     private final String SERVICE_NAME = "edo-service";
 
@@ -47,25 +41,20 @@ public class CreatingAppealServiceImpl implements CreatingAppealService {
                 .build().toString();
     }
 
+    /**
+     * Предоставляет список номенклатур из БД по индексу
+     *
+     * @return List of NomenclatureDto
+     */
     @Override
-    public AppealDto createAppeal(AppealDto appealDto) {
+    public List<NomenclatureDto> findByIndex(String index) {
+        if (index.length() < 2) {
+            return null;
+        }
         InstanceInfo instanceInfo = getInstance();
-        appealDto.setAppealStatus(STATUS_FOR_NEW_APPEAL);
-        var response = TEMPLATE.postForObject(getURIByInstance(instanceInfo, EMPTY), appealDto, AppealDto.class);
-        return response;
-    }
-
-
-
-    @Override
-    public List<AppealAbbreviatedDto> findAllByIdEmployee(Long first, Long amount) {
-        InstanceInfo instanceInfo = getInstance();
-        String path = "/appealsByEmployee/?first=" +
-                first +
-                "&amount=" +
-                amount;
+        String path = "/search/?index=" + index;
         var uri = getURIByInstance(instanceInfo, path);
-        AppealAbbreviatedDto[] response = TEMPLATE.getForObject(uri, AppealAbbreviatedDto[].class);
+        NomenclatureDto[] response = TEMPLATE.getForObject(uri, NomenclatureDto[].class);
         return Arrays.asList(response);
     }
 }

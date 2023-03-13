@@ -108,4 +108,22 @@ public class NomenclatureController {
         log.log(Level.INFO, "Nomenclature move to archive: id = {0}", id);
         return ResponseEntity.ok().build();
     }
+
+    @ApiOperation(value = "Получить список номенклатур из БД " +
+            "по первым двум символам символам (?index=**")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully retrieved"),
+            @ApiResponse(code = 404, message = "Not found - Nomenclature not found")
+    })
+    @GetMapping("/search/")
+    public ResponseEntity<List<NomenclatureDto>> dynamicSearchForNomenclature(
+            @RequestParam("index") String index) {
+        List<NomenclatureDto> nomenclature = nomenclatureService.findByIndex(index);
+        if (nomenclature == null) {
+            log.log(Level.WARNING, "Сущности не найдены");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        log.log(Level.INFO, "Сущности найдены");
+        return new ResponseEntity<>(nomenclature, HttpStatus.OK);
+    }
 }

@@ -1,8 +1,10 @@
 package com.education.controller;
 
 import com.education.entity.Appeal;
+import com.education.model.dto.AppealAbbreviatedDto;
 import com.education.model.dto.AppealDto;
 import com.education.service.appeal.AppealService;
+import com.education.util.Mapper.impl.AppealAbbreviatedMapper;
 import com.education.util.Mapper.impl.AppealMapper;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -12,13 +14,7 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,6 +27,7 @@ public class AppealController {
     final private AppealService appealService;
 
     final private AppealMapper mapper;
+    final private AppealAbbreviatedMapper AppealAbbreviatedMapper;
 
 
     @ApiOperation(value = "Сохранение сущности в БД")
@@ -120,5 +117,26 @@ public class AppealController {
         }
         log.log(Level.INFO, "Сущности найдены");
         return new ResponseEntity<>(mapper.toDto(appeal), HttpStatus.OK);
+    }
+
+    /**
+     * В качестве id объекта Principal используется заглушка (idPrincipal = 1L)
+     */
+    @ApiOperation(value = "Получение сущностей Appeal для Employee creator (?first=1&amount=1)")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Сущность найдена"),
+            @ApiResponse(code = 404, message = "Сущность не найдена")
+    })
+    @GetMapping(value = "/appealsByEmployee/")
+    public ResponseEntity<List<AppealAbbreviatedDto>> findByIdEmployee(@RequestParam("first") Long first,
+                                                                       @RequestParam("amount") Long amount) {
+        Long idPrincipal = 1L;
+        List<Appeal> appeal = appealService.findAllByIdEmployee(idPrincipal, first, amount);
+        if (appeal == null && appeal.isEmpty()) {
+            log.log(Level.WARN, "Сущности не найдены");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        log.log(Level.INFO, "Сущности найдены");
+        return new ResponseEntity<>(AppealAbbreviatedMapper.toDto(appeal), HttpStatus.OK);
     }
 }

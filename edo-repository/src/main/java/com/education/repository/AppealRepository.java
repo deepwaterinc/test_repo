@@ -4,7 +4,6 @@ import com.education.entity.Appeal;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +31,16 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
     @Query(value = "select r from Appeal r where r.id in :ids and r.archivedDate is null ")
     @EntityGraph(attributePaths = {"creator", "signer"})
     List<Appeal> findAllByIdNotArchived(@Param("ids") Iterable<Long> ids);
+
+
+    @Query(nativeQuery = true,
+            value = "SELECT a.* FROM appeal a " +
+            "LEFT JOIN employee e ON a.creator_id = e.id " +
+            "WHERE e.id = :id ORDER BY a.id OFFSET :firstPoint LIMIT :amount")
+    List<Appeal> findByIdEmployee(@Param(value = "id")Long id,
+                                  @Param(value = "firstPoint")Long first,
+                                  @Param(value = "amount")Long amount);
+
 
     @Query(value = "select a.*" +
             "    from appeal a" +

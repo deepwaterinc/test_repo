@@ -106,14 +106,6 @@ public class Appeal extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "question_id", referencedColumnName = "id"))
     private List<Question> question;
 
-
-    /**
-     * Тема обращения
-     */
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "theme_id")
-    private Theme theme;
-
     /**
      * Статус обращения
      */

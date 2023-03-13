@@ -1,5 +1,6 @@
 package com.education.controller;
 
+import com.education.model.dto.AppealAbbreviatedDto;
 import com.education.model.dto.AppealDto;
 import com.education.service.appeal.AppealService;
 import io.swagger.annotations.ApiOperation;
@@ -116,4 +117,23 @@ public class AppealController {
         log.log(Level.INFO, "Сущности найдены");
         return new ResponseEntity<>(appealDto, HttpStatus.OK);
     }
+
+    @ApiOperation(value = "Получение сущностей Appeal для Employee creator (?first=1&amount=1)")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Сущность найдена"),
+            @ApiResponse(code = 404, message = "Сущность не найдена")
+    })
+
+    @GetMapping(value = "/appealsByEmployee/")
+    public ResponseEntity<List<AppealAbbreviatedDto>> findByIdEmployee(@RequestParam("first") Long first,
+                                                                       @RequestParam("amount") Long amount) {
+        List<AppealAbbreviatedDto> appeal = appealService.findAllByIdEmployee(first, amount);
+        if (appeal == null && appeal.isEmpty()) {
+            log.log(Level.WARN, "Сущности не найдены");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        log.log(Level.INFO, "Сущности найдены");
+        return new ResponseEntity<>(appeal, HttpStatus.OK);
+    }
+
 }

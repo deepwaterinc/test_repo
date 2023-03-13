@@ -1,10 +1,13 @@
 package com.education.controller;
 
+import com.education.entity.Nomenclature;
 import com.education.model.dto.NomenclatureDto;
 import com.education.service.nomenclature.NomenclatureService;
+import com.education.util.Mapper.impl.NomenclatureMapper;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +20,10 @@ import java.util.logging.Level;
 @RestController
 @RequestMapping("api/repository/nomenclature")
 @Log
+@Log4j2
 public class NomenclatureRestController {
     final private NomenclatureService nomenclatureService;
+    final private NomenclatureMapper nomenclatureMapper;
 
     @ApiOperation(value = "Сохранить сущность в БД")
     @ApiResponses(value = {
@@ -107,5 +112,23 @@ public class NomenclatureRestController {
         nomenclatureService.moveToArchive(id);
         log.log(Level.INFO, "Nomenclature move to archive: id = {0}", id);
         return ResponseEntity.ok().build();
+    }
+
+    @ApiOperation(value = "Получить список номенклатур из БД " +
+            "по первым двум символам символам (?index=**")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully retrieved"),
+            @ApiResponse(code = 404, message = "Not found - Nomenclature not found")
+    })
+    @GetMapping("/search/")
+    public ResponseEntity<List<NomenclatureDto>> dynamicSearchForNomenclature(
+            @RequestParam("index") String index) {
+        List<Nomenclature> nomenclature = nomenclatureService.findByIndex(index);
+        if (nomenclature == null) {
+            log.log(Level.WARNING, "Сущности не найдены");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        log.log(Level.INFO, "Сущности найдены");
+        return new ResponseEntity<>(nomenclatureMapper.toDto(nomenclature), HttpStatus.OK);
     }
 }

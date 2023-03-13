@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class AddressDto {
     @ApiModelProperty("Id")
     private Long id;
@@ -33,4 +34,6 @@ public class AddressDto {
     private String country;
     @ApiModelProperty("Этаж")
     private String flat;
+
+
 }
