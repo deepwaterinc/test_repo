@@ -1,4 +1,4 @@
-package com.education.service;
+package com.education.service.Appeal;
 
 import com.education.model.dto.AppealAbbreviatedDto;
 import com.education.model.dto.AppealDto;
@@ -11,8 +11,6 @@ import org.apache.http.HttpHost;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import java.net.URI;
-
 import java.util.Arrays;
 import java.util.List;
 
