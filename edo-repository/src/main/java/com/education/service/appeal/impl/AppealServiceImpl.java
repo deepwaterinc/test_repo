@@ -61,8 +61,7 @@ public class AppealServiceImpl implements AppealService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void moveToUnderConsideration(Long resolutionId) {
-        Appeal appeal = appealRepository.getAppealByResolutionId(resolutionId);
-        appealRepository.moveToUnderConsideration(appeal.getId());
+        appealRepository.moveToUnderConsideration(resolutionId);
     }
 
     @Transactional(readOnly = true, rollbackFor = Exception.class)
