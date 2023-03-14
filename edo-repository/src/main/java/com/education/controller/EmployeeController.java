@@ -115,7 +115,7 @@ public class EmployeeController {
     @ApiOperation("Поиск пользователя по ФИО")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Employee was successfully found"),
             @ApiResponse(code = 404, message = "Employee was not found")})
-    @GetMapping("/")
+    @GetMapping("/byFIO/")
     public ResponseEntity<List<EmployeeDto>> userSearch(@RequestParam(value = "fio", required = false) String fio) {
         log.log(Level.INFO, "Получен запрос на поиск сущностей {0}", fio);
         List<Employee> dtos = employeeService.findAllByLastNameLikeOrderByLastName(fio);

@@ -110,6 +110,18 @@ public class EmployeeRestTemplateClient {
     }
 
     /**
+     * Метод, производящий поиск в таблице сущностей Employee по введенным символам
+     * @param fio
+     * @return
+     */
+    public List<EmployeeDto> findAllByLastNameLikeOrderByLastName(String fio) {
+        String path = "/byFIO/" + fio;
+        return Arrays.asList(Objects.requireNonNull(restTemplate.getForObject(getDefaultUriComponentBuilder(BASIC_URL + path)
+                .build()
+                .toUri(), EmployeeDto[].class)));
+    }
+
+    /**
      * Метод, возвращающий случайный экземпляр сервиса edo-repository
      * @return Случайный экземпляр сервиса edo-repository
      */

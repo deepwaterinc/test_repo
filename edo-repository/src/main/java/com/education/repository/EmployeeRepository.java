@@ -46,6 +46,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
      * @param fio
      * @return
      */
-    @Query("SELECT emp FROM Employee emp WHERE concat(emp.lastName,' ', emp.firstName,' ', emp.middleName) LIKE %:fio% ORDER BY emp.lastName")
+    @Query("SELECT emp FROM Employee emp " +
+            "WHERE LOWER(concat(emp.lastName,' ', emp.firstName,' ', emp.middleName)) " +
+            "LIKE concat(LOWER(:fio) , '%') ORDER BY emp.lastName")
     List<Employee> findAllByLastNameLikeOrderByLastName(String fio);
 }

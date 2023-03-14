@@ -36,6 +36,12 @@ public class EmployeeRestTemplateServiceImpl implements EmployeeRestTemplateServ
     public void moveToArchive(Long id) {
         employeeClient.moveEmployeeToArchive(id);
     }
+
+    @Override
+    public List<EmployeeDto> findAllByLastNameLikeOrderByLastName(String fio) {
+        return fio.length() < 3 ? null : employeeClient.findAllByLastNameLikeOrderByLastName(fio);
+    }
+
 }
 
 
