@@ -44,10 +44,10 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
 
     @Modifying
     @Query(value = "UPDATE appeal SET appeal_status = 'UNDER_CONSIDERATION'" +
-            "   from appeal a" +
-            "   left join appeal_question aq on a.id = aq.appeal_id" +
-            "   left join resolution r on aq.question_id = r.question_id" +
-            "   where r.id = :resolutionId", nativeQuery = true)
+            " where id = (select a.id from appeal a" +
+            " left join appeal_question aq on a.id = aq.appeal_id" +
+            " left join resolution r on aq.question_id= r.question_id" +
+            " where r.id = :resolutionId)", nativeQuery = true)
     void moveToUnderConsideration(@Param("resolutionId") long resolutionId);
 }
 
