@@ -19,6 +19,11 @@ public class RabbitMQConfig {
     }
 
     @Bean
+    public Queue addressCreateService(){
+        return new Queue(RabbitConstant.addressCreateServiceQueue, false);
+    }
+
+    @Bean
     public DirectExchange exchange(){
          return new DirectExchange(RabbitConstant.exchange);
     }
