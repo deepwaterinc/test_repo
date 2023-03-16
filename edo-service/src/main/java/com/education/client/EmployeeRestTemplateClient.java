@@ -6,7 +6,11 @@ import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpHost;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.RequestEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -38,7 +42,7 @@ public class EmployeeRestTemplateClient {
     private final String BASIC_URL = "api/repository/employee";
 
     /**
-     * Метод, возврашающий EmployeeDto по заданному id
+     * Метод, возврашающий EmployeeDto по заданному id, пробрасывая токен в заголовке
      * @param id id сущности
      * @param notArchivedOnly Логическая переменная. При значении true поиск выполняется
      *                        только среди сущнотей, не находящихся в архиве.
@@ -48,12 +52,15 @@ public class EmployeeRestTemplateClient {
      */
     public EmployeeDto getEmployeeById(Long id, boolean notArchivedOnly) {
         try {
-            return restTemplate.getForObject(
-                    getDefaultUriComponentBuilder(BASIC_URL + "/{id}")
-                            .queryParam("notArchivedOnly", notArchivedOnly)
-                            .buildAndExpand(id)
-                            .toUri()
-                    , EmployeeDto.class);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setBearerAuth(((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getTokenValue());
+            var entity = RequestEntity.get(getDefaultUriComponentBuilder(BASIC_URL + "/{id}")
+                    .queryParam("notArchivedOnly", notArchivedOnly)
+                    .buildAndExpand(id)
+                    .toUri()).headers(headers).build();
+            return restTemplate.exchange(entity
+
+                    , EmployeeDto.class).getBody();
         } catch (HttpClientErrorException.NotFound e) {
             return null;
         }
