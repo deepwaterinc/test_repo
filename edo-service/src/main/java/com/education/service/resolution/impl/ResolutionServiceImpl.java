@@ -6,12 +6,12 @@ import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import com.netflix.discovery.shared.Application;
 import lombok.RequiredArgsConstructor;
-
 import org.apache.http.HttpHost;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.RequestEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
@@ -47,10 +47,11 @@ public class ResolutionServiceImpl implements ResolutionService {
     }
 
     @Override
-    public void save(ResolutionDto resolution) {
+    public ResolutionDto save(ResolutionDto resolution) {
         InstanceInfo instanceInfo = getInstance();
-        URI uri = getURIByInstance(instanceInfo, "");
-        TEMPLATE.postForObject(uri, resolution, ResolutionDto.class);
+        var request = new RequestEntity(resolution, HttpMethod.POST, getURIByInstance(instanceInfo, ""));
+        var response = TEMPLATE.exchange(request, ResolutionDto.class);
+        return response.getBody();
     }
 
     @Override

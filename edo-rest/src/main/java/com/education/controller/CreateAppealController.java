@@ -2,7 +2,7 @@ package com.education.controller;
 
 import com.education.model.dto.AppealAbbreviatedDto;
 import com.education.model.dto.AppealDto;
-import com.education.service.CreatingAppealService;
+import com.education.service.Appeal.CreatingAppealService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;

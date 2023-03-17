@@ -57,10 +57,6 @@ public class AppealDto {
     @ApiModelProperty("Вопросы, связанные с обращением")
     private List<QuestionDto> question;
 
-    @ApiModelProperty("Резолюция по обращению")
-    @JsonInclude(NON_NULL)
-    private ResolutionDto resolution;
-
     @ApiModelProperty("Статус обращения")
     private EnumAppealStatus appealStatus;
 

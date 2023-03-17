@@ -6,7 +6,6 @@ import com.education.service.appeal.AppealService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Comparator;
@@ -57,7 +56,12 @@ public class AppealServiceImpl implements AppealService {
     @Override
     public List<Appeal> findAllByIdNotArchived(Iterable<Long> ids) {
         return appealRepository.findAllByIdNotArchived(ids);
+    }
 
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void moveToUnderConsideration(Long resolutionId) {
+        appealRepository.moveToUnderConsideration(resolutionId);
     }
 
     @Transactional(readOnly = true, rollbackFor = Exception.class)

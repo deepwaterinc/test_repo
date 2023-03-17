@@ -1,16 +1,11 @@
 package com.education.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
-
 import java.time.ZonedDateTime;
+import java.util.List;
 
 /**
  * @author Anton Latyshev.
@@ -46,11 +41,10 @@ public class Question extends BaseEntity{
     private String summary;
 
     /**
-     * Объект Resolution, связанный с вопросом
+     * Объекты Resolution, связанные с вопросом
      */
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "resolution_id")
-    private Resolution resolution;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "question")
+    private List<Resolution> resolutions;
 
     /**
      * Тема вопроса

@@ -31,13 +31,13 @@ public class ResolutionController {
     })
     @PostMapping
     public ResponseEntity<ResolutionDto> saveResolution(@ApiParam("resolutionDto") @RequestBody ResolutionDto resolutionDto) {
-        resolutionService.save(resolutionDto);
-        if (resolutionService.findById(resolutionDto.getId()) != null) {
+        ResolutionDto resolutionDtoAfter = resolutionService.save(resolutionDto);
+        if (resolutionDtoAfter.getId() != null) {
             log.log(Level.INFO, "Сущность сохранена или обновлена");
-            return new ResponseEntity<>(resolutionDto, HttpStatus.CREATED);
+            return new ResponseEntity<>(resolutionDtoAfter, HttpStatus.CREATED);
         }
         log.log(Level.WARN, "Сущность не сохранена и не обновлена");
-        return new ResponseEntity<>(resolutionDto, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
     @ApiOperation(value = "Обновление даты архивации")

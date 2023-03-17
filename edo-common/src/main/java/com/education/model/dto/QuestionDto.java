@@ -5,9 +5,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
 import java.time.ZonedDateTime;
-
+import java.util.List;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @ApiModel("Класс QuestionDto - DTO для Question.class")
@@ -29,8 +28,10 @@ public class QuestionDto {
     @ApiModelProperty("Краткое содержание обращения")
     private String summary;
 
+    @ApiModelProperty("Список резолюций по вопросу")
     @JsonInclude(NON_NULL)
-    private ResolutionDto resolution;
+    private List<ResolutionDto> resolutions;
 
+    @ApiModelProperty("Тема, к которой относится вопрос")
     private ThemeDto theme;
 }

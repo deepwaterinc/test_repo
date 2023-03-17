@@ -1,4 +1,4 @@
-package com.education.service;
+package com.education.service.Appeal;
 
 import com.education.model.dto.AppealAbbreviatedDto;
 import com.education.model.dto.AppealDto;
