@@ -97,6 +97,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     @Transactional(readOnly = true)
     public List<Employee> findAllByLastNameLikeOrderByLastName(String fio) {
-        return fio.length() < 3 ? null : employeeRepository.findAllByLastNameLikeOrderByLastName(fio);
+        return employeeRepository.findAllByLastNameLikeOrderByLastName(fio);
     }
 }
