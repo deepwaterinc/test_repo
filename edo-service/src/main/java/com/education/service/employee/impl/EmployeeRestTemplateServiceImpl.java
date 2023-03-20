@@ -15,6 +15,10 @@ import java.util.List;
 @AllArgsConstructor
 public class EmployeeRestTemplateServiceImpl implements EmployeeRestTemplateService {
     private final EmployeeRestTemplateClient employeeClient;
+    /**
+     * Длина символов(ФИО) вводимых, после которого происходит поиск в БД по ФИО
+     */
+    private static final int FIOLENGTH = 3;
 
 
     @Override
@@ -36,6 +40,12 @@ public class EmployeeRestTemplateServiceImpl implements EmployeeRestTemplateServ
     public void moveToArchive(Long id) {
         employeeClient.moveEmployeeToArchive(id);
     }
+
+    @Override
+    public List<EmployeeDto> findAllByLastNameLikeOrderByLastName(String fio) {
+        return fio.length() < FIOLENGTH ? null : employeeClient.findAllByLastNameLikeOrderByLastName(fio);
+    }
+
 }
 
 

@@ -14,4 +14,5 @@ public interface EmployeeRestTemplateService {
     EmployeeDto save(EmployeeDto emp);
 
     void moveToArchive(Long id);
+    public List<EmployeeDto> findAllByLastNameLikeOrderByLastName(String fio);
 }

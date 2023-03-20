@@ -40,4 +40,14 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
      */
     @Query("SELECT emp FROM Employee emp WHERE emp.id IN :ids AND emp.archivedDate IS NULL")
     List<Employee> findAllByIdNotArchived(@Param("ids") Iterable<Long> ids);
+
+    /**
+     * Метод, производящий поиск в таблице сущностей Employee по введенным символам
+     * @param fio
+     * @return
+     */
+    @Query("SELECT emp FROM Employee emp " +
+            "WHERE LOWER(concat(emp.lastName,' ', emp.firstName,' ', emp.middleName)) " +
+            "LIKE concat(LOWER(:fio) , '%') ORDER BY emp.lastName")
+    List<Employee> findAllByLastNameLikeOrderByLastName(String fio);
 }
