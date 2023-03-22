@@ -304,3 +304,50 @@ Stream.of("a","b","c")
 
 5. Если миграция некорректно накатилась, то необходимо руками удалить внесенные изменения и удалить запись в
    таблице <code>flyway_schema_history</code> после чего исправить скрипт
+
+### RabbitMQ
+Для работы установите Erlang и RabbitMQ или используйте докер образ RabbitMQ:
++ [rabbitmq.com](https://www.rabbitmq.com/download.html)
+
+После запуска приложения можно зайти в web версию http://localhost:15672
+Логин и пароль - guest
+
+#### Инструкция по созданию очереди
+В конфигурационном файле создайте бин новой очереди:
+````java
+@Bean
+public Queue nameNewQueue() {
+return new Queue(RabbitConstant.nameNewQueue, false);
+}
+````
+
+И свяжите очередь с routing key
+````java
+@Bean
+public Binding binding(Queue nameNewQueue, DirectExchange exchange){
+return BindingBuilder
+.bind(nameNewQueue)
+.to(exchange)
+.with(RabbitConstant.nameRoutingKey);
+}
+````
+
+Название очереди и routing key можно сделать одинаковым и оно должно отражать суть задачи,
+например "rest.appeal.create".
+
+Названия очередей создавайте как константы в модуле edo-common
+
+#### Инструкция по созданию Producer
+````java
+@Autowired
+private AmqpTemplate template;
+
+template.convertAndSend(RabbitConstant.exchange,RabbitConstant.newRoutingKey, data);
+````
+RabbitConstant.exchange - это название Exchange, он общий для всех очередей.
+
+#### Инструкция по созданию Listener
+над методом укажите аннотацию с названием очереди, которую необходимо слушать
+````java
+@RabbitListener(queues = RabbitConstant.nameNewQueue)
+````

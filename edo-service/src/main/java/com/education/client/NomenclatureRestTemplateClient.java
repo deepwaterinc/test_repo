@@ -5,6 +5,7 @@ import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import com.netflix.discovery.shared.Application;
 import lombok.RequiredArgsConstructor;
+import org.apache.http.HttpHost;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -57,6 +59,7 @@ public class NomenclatureRestTemplateClient {
 
     /**
      * Отправяляет запрос на сохранение номенклатуры
+     *
      * @param nomenclature NomenclatureDto
      * @return NomenclatureDto
      */
@@ -76,6 +79,7 @@ public class NomenclatureRestTemplateClient {
 
     /**
      * Отправляет запрос для предоставления NomenclatureDto номенклатуры по id
+     *
      * @param id Long
      * @return NomenclatureDto
      */
@@ -93,6 +97,7 @@ public class NomenclatureRestTemplateClient {
 
     /**
      * Отправляет запрос для предоставления списка NomenclatureDto номенклатур по id
+     *
      * @param ids List of id
      * @return List of NomenclatureDto
      */
@@ -111,6 +116,7 @@ public class NomenclatureRestTemplateClient {
 
     /**
      * Отправляет запрос для предоставления не заархивированной NomenclatureDto номенклатуры по id
+     *
      * @param id Long
      * @return NomenclatureDto
      */
@@ -128,6 +134,7 @@ public class NomenclatureRestTemplateClient {
 
     /**
      * Отправляет запрос для предоставления списка не заархивированных NomenclatureDto номенклатур по id
+     *
      * @param ids List of id
      * @return List of NomenclatureDto
      */
@@ -146,6 +153,7 @@ public class NomenclatureRestTemplateClient {
 
     /**
      * Отправляет запрос для перевода номенклатуры в архив
+     *
      * @param id Long
      */
     public void moveToArchive(Long id) {
@@ -161,6 +169,7 @@ public class NomenclatureRestTemplateClient {
 
     /**
      * get random instance
+     *
      * @return InstanceInfo
      */
     private InstanceInfo getInstance() {
@@ -172,8 +181,9 @@ public class NomenclatureRestTemplateClient {
 
     /**
      * Build URI
+     *
      * @param instance InstanceInfo
-     * @param path This is the request path
+     * @param path     This is the request path
      * @return URI
      */
     private URI buildUri(InstanceInfo instance, String path) {
@@ -187,17 +197,35 @@ public class NomenclatureRestTemplateClient {
 
     /**
      * Build uri with id
+     *
      * @param instance InstanceInfo
-     * @param path This is the request path
-     * @param id Long
+     * @param path     This is the request path
+     * @param id       Long
      * @return URI
      */
     private URI buildUri(InstanceInfo instance, String path, Long id) {
-       return UriComponentsBuilder.fromPath(BASE_URL + path)
+        return UriComponentsBuilder.fromPath(BASE_URL + path)
                 .scheme(SCHEMA_NAME)
                 .host(instance.getHostName())
                 .port(instance.getPort())
                 .buildAndExpand(id)
                 .toUri();
     }
+
+    private String getURIByInstance(InstanceInfo instanceInfo, String pathVariable) {
+        return UriComponentsBuilder.fromPath(BASE_URL + pathVariable)
+                .scheme(HttpHost.DEFAULT_SCHEME_NAME)
+                .host(instanceInfo.getHostName())
+                .port(instanceInfo.getPort())
+                .build().toString();
+    }
+
+    public List<NomenclatureDto> findByIndex(String index) {
+        InstanceInfo instanceInfo = getInstance();
+        String path = "/search/?index=" + index;
+        var uri = getURIByInstance(instanceInfo, path);
+        NomenclatureDto[] response = restTemplate.getForObject(uri, NomenclatureDto[].class);
+        return Arrays.asList(response);
+    }
+
 }

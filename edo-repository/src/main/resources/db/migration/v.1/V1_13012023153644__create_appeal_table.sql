@@ -5,8 +5,8 @@ create table if not exists appeal
     archived_date timestamptz,                                   -- Дата архивирования обращения
     number        varchar(255) not null,                         -- Номер обращения
     annotation    varchar(255) not null,                         -- Описание обращения
-    creator_id    bigint       not null references employee (id) -- Автор
-); --Таблица описывающая обращение
+    creator_id    bigint       not null references employee (id)); -- Автор
+ --Таблица описывающая обращение
 
 create table if not exists appeal_signer
 (
@@ -16,7 +16,7 @@ create table if not exists appeal_signer
 create table if not exists appeal_addressee
 (
     appeal_id    bigint references appeal (id),
-    employee_id  bigint references employee (id)
+    employee_id  bigint references address (id)
 ); --Таблица one to many appeal_addressee
 
 comment on column appeal_signer.appeal_id is 'id appeal';

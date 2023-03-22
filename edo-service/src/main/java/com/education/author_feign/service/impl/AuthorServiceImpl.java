@@ -29,7 +29,7 @@ import java.util.List;
 public class AuthorServiceImpl implements AuthorService {
 
     private final RestTemplate restTemplate;
-    private final String BASE_URL = "/api/repository/author/";
+    private final String BASE_URL = "/api/repository/author";
     private final String HTTP = "http";
     private final String SERVICE_NAME = "edo-repository";
     private EurekaClient client;
@@ -49,7 +49,7 @@ public class AuthorServiceImpl implements AuthorService {
      */
     @Override
     public ResponseEntity<String> delete(Long id) {
-        var uri = getUri(id.toString());
+        var uri = getUri("/" + id.toString());
         restTemplate.delete(uri);
         return ResponseEntity.ok("DELETED");
     }
@@ -59,7 +59,7 @@ public class AuthorServiceImpl implements AuthorService {
      */
     @Override
     public AuthorDto findById(Long id) {
-        var uri = getUri(id.toString());
+        var uri = getUri("/" + id.toString());
         return restTemplate.getForEntity(uri, AuthorDto.class).getBody();
     }
 
@@ -68,7 +68,7 @@ public class AuthorServiceImpl implements AuthorService {
      */
     @Override
     public List<AuthorDto> findAllById(List<String> ids) {
-        var uri = getUri("findAll");
+        var uri = getUri("/findAll");
         return restTemplate.exchange(new RequestEntity<>(ids, HttpMethod.POST,uri), new ParameterizedTypeReference<List<AuthorDto>>() {
         }).getBody();
     }

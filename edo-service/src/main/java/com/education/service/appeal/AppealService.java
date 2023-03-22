@@ -1,11 +1,12 @@
 package com.education.service.appeal;
 
+import com.education.model.dto.AppealAbbreviatedDto;
 import com.education.model.dto.AppealDto;
 
 import java.util.List;
 
 public interface AppealService {
-    void save(AppealDto appeal);
+    AppealDto save(AppealDto appeal);
 
     void moveToArchive(Long id);
 
@@ -16,4 +17,6 @@ public interface AppealService {
     AppealDto findByIdNotArchived(Long id);
 
     List<AppealDto> findAllByIdNotArchived(Iterable<Long> ids);
+
+    List<AppealAbbreviatedDto> findAllByIdEmployee(Long first, Long amount);
 }

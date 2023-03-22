@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,8 +37,9 @@ public class QuestionServiceImpl implements QuestionService {
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void save(QuestionDto question) {
-        questionRepository.saveAndFlush(mapper.toEntity(question));
+    public QuestionDto save(QuestionDto question) {
+        question.setCreationDate(ZonedDateTime.now(ZoneId.of("Europe/Moscow")));
+        return mapper.toDto(questionRepository.save(mapper.toEntity(question)));
     }
 
     /**

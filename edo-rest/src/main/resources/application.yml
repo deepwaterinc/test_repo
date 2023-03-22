@@ -19,7 +19,7 @@ spring:
   application:
     name: edo-rest
 server:
-  port: 0
+  port: 8080
 eureka:
   client:
     serviceUrl:

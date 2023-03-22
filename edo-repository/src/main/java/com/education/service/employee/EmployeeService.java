@@ -13,4 +13,5 @@ public interface EmployeeService {
     Employee findByIdNotArchived(Long id);
     List<Employee> findAllByIdNotArchived(Iterable<Long> ids);
     void moveToArchive(Long id);
+    List<Employee> findAllByLastNameLikeOrderByLastName(String fio);
 }

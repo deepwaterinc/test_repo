@@ -84,6 +84,21 @@ public class EmployeeRestTemplateController {
         log.log(Level.INFO, "Сущность успешно добавлена в архив");
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
+
+    @ApiOperation("Поиск пользователя по ФИО")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Employee was successfully found"),
+            @ApiResponse(code = 404, message = "Employee was not found")})
+    @GetMapping("/byFIO/")
+    public ResponseEntity<List<EmployeeDto>> userSearch(@RequestParam(value = "fio", required = false) String fio) {
+        log.log(Level.INFO, "Получен запрос на поиск сущностей {0}", fio);
+        List<EmployeeDto> listDTO = employeeFeignService.findAllByLastNameLikeOrderByLastName(fio);
+        log.log(!listDTO.isEmpty()
+                        ? Level.INFO
+                        : Level.WARNING
+                , "Результат поиска сущностей: {0}", listDTO);
+        return new ResponseEntity<>(listDTO
+                , !listDTO.isEmpty() ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+    }
 }
 
 

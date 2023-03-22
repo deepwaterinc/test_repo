@@ -1,6 +1,8 @@
 package com.education.service.nomenclature;
 
+import com.education.entity.Nomenclature;
 import com.education.model.dto.NomenclatureDto;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,6 +18,7 @@ public interface NomenclatureService {
 
     /**
      * Сохраняет номенклатуру в БД
+     *
      * @param nomenclature NomenclatureDto
      * @return NomenclatureDto
      */
@@ -23,12 +26,14 @@ public interface NomenclatureService {
 
     /**
      * Переводит номенклатуру в архив
+     *
      * @param id Long
      */
     void moveToArchive(Long id);
 
     /**
      * Предоставляет NomenclatureDto номенклатуры из БД по id
+     *
      * @param id Long
      * @return Nomenclature Dto
      */
@@ -36,6 +41,7 @@ public interface NomenclatureService {
 
     /**
      * Предоставляет список NomenclatureDto номенклатур из БД по id
+     *
      * @param list List of id
      * @return List of NomenclatureDto
      */
@@ -43,6 +49,7 @@ public interface NomenclatureService {
 
     /**
      * Предоставляет не заархивированное NomenclatureDto номенклатуры из БД по id
+     *
      * @param id Long
      * @return NomenclatureDto
      */
@@ -50,8 +57,16 @@ public interface NomenclatureService {
 
     /**
      * Предоставляет список не заархивированных NomenclatureDto номенклатур из БД по id
+     *
      * @param list List of id
      * @return List of NomenclatureDto
      */
     List<NomenclatureDto> findAllByIdNotArchived(Iterable<Long> list);
+
+    /**
+     * Предоставляет список номенклатур из БД по индексу
+     *
+     * @return List of NomenclatureDto
+     */
+    List<Nomenclature> findByIndex(String index);
 }

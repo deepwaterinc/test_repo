@@ -5,7 +5,7 @@ import com.education.model.dto.QuestionDto;
 import java.util.List;
 
 public interface QuestionService {
-    void save(QuestionDto question);
+    QuestionDto save(QuestionDto question);
 
     void moveToArchive(Long id);
 

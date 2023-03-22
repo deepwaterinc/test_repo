@@ -19,8 +19,8 @@ public class ResolutionServiceImpl implements ResolutionService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void save(Resolution resolution) {
-        resolutionRepository.save(resolution);
+    public Resolution save(Resolution resolution) {
+        return resolutionRepository.save(resolution);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -35,7 +35,6 @@ public class ResolutionServiceImpl implements ResolutionService {
     public Resolution findById(Long id) {
         return resolutionRepository.findById(id).get();
     }
-
 
     @Transactional(readOnly = true, rollbackFor = Exception.class)
     @Override

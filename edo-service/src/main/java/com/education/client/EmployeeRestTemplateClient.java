@@ -16,6 +16,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -68,7 +69,8 @@ public class EmployeeRestTemplateClient {
 
     /**
      * Метод, возврашающий список EmployeeDto по заданным id
-     * @param ids id сущностей
+     *
+     * @param ids             id сущностей
      * @param notArchivedOnly Логическая переменная. При значении true поиск выполняется
      *                        только среди сущнотей, не находящихся в архиве.
      *                        При значении false - среди всех сущностей
@@ -92,19 +94,21 @@ public class EmployeeRestTemplateClient {
 
     /**
      * Метод, сохраняющий сущность Employee в таблицу
+     *
      * @param employee сохраняемая сущность
      * @return объект каласса EmployeeDto, соответствующий сохраненной сущности
      */
     public EmployeeDto saveEmployee(EmployeeDto employee) {
         return restTemplate.postForObject(getDefaultUriComponentBuilder(BASIC_URL)
-                .build()
-                .toUri()
+                        .build()
+                        .toUri()
                 , employee
                 , EmployeeDto.class);
     }
 
     /**
      * Добавляет сущность из таблицы employee в архив
+     *
      * @param id id сущности
      */
     public void moveEmployeeToArchive(Long id) {
@@ -117,18 +121,35 @@ public class EmployeeRestTemplateClient {
     }
 
     /**
+     * Метод, производящий поиск в таблице сущностей Employee по введенным символам
+     *
+     * @param fio
+     * @return
+     */
+    public List<EmployeeDto> findAllByLastNameLikeOrderByLastName(String fio) {
+        String path = "/byFIO/" + fio;
+        URI uri = getDefaultUriComponentBuilder(BASIC_URL + path).build().toUri();
+        var request = new RequestEntity<>(null, HttpMethod.GET, uri);
+        var response = restTemplate.exchange(request, new ParameterizedTypeReference<List<EmployeeDto>>() {
+        });
+        return response.getBody();
+    }
+
+    /**
      * Метод, возвращающий случайный экземпляр сервиса edo-repository
+     *
      * @return Случайный экземпляр сервиса edo-repository
      */
     private InstanceInfo getRandomInstance() {
         var instances = eurekaClient
                 .getApplication("edo-repository")
                 .getInstances();
-        return instances.get((int)(instances.size() * Math.random()));
+        return instances.get((int) (instances.size() * Math.random()));
     }
 
     /**
      * Метод, возвращающий общий для всех методов класса объект UriComponentBuilder
+     *
      * @param path адрес api
      * @return объект UriComponentsBuilder
      */

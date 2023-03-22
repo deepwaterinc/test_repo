@@ -1,9 +1,14 @@
 package com.education.controller;
 
 import com.education.entity.Employee;
+import com.education.entity.Notification;
 import com.education.model.dto.EmployeeDto;
+import com.education.model.dto.NotificationDto;
+import com.education.model.enumEntity.EnumNotification;
 import com.education.service.employee.EmployeeService;
+import com.education.service.notification.NotificationService;
 import com.education.util.Mapper.impl.EmployeeMapper;
+import com.education.util.Mapper.impl.NotificationMapper;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
@@ -11,6 +16,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,9 +28,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
-
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -37,6 +45,8 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     private final EmployeeMapper mapper;
+    private final NotificationMapper notificationMapper;
+    private final NotificationService notificationService;
 
     @ApiOperation("Получить сущность Employee по id")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Employee was successfully found"),
@@ -51,8 +61,8 @@ public class EmployeeController {
                         ? employeeService.findByIdNotArchived(id)
                         : employeeService.findById(id));
         log.log(employeeDto != null
-                ? Level.INFO
-                : Level.WARNING
+                        ? Level.INFO
+                        : Level.WARNING
                 , "Результат поиска: {0}", employeeDto);
         return new ResponseEntity<>(employeeDto
                 , employeeDto != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
@@ -81,8 +91,11 @@ public class EmployeeController {
     @ApiResponse(code = 201, message = "Employee was saved")
     @PostMapping
     public ResponseEntity<EmployeeDto> saveEmployee(@RequestBody EmployeeDto employeeDto) {
-        log.log(Level.INFO, "Получен запрос на сохранение сущности" );
+        log.log(Level.INFO, "Получен запрос на сохранение сущности");
         Employee employee = mapper.toEntity(employeeDto);
+        List<Notification> notifications = notificationMapper.toEntity(employeeDto.getNotification());
+        notificationService.saveAll(notifications);
+        employee.setNotification(notifications);
         employeeService.save(employee);
         log.log(Level.INFO, "Сущность сохранена");
         return new ResponseEntity<>(mapper.toDto(employee)
@@ -97,5 +110,21 @@ public class EmployeeController {
         employeeService.moveToArchive(id);
         log.log(Level.INFO, "Сущность успешно добавлена в архив");
         return new ResponseEntity<>(id, HttpStatus.OK);
+    }
+
+    @ApiOperation("Поиск пользователя по ФИО")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Employee was successfully found"),
+            @ApiResponse(code = 404, message = "Employee was not found")})
+    @GetMapping("/byFIO/")
+    public ResponseEntity<List<EmployeeDto>> userSearch(@RequestParam(value = "fio", required = false) String fio) {
+        log.log(Level.INFO, "Получен запрос на поиск сущностей {0}", fio);
+        List<Employee> dtos = employeeService.findAllByLastNameLikeOrderByLastName(fio);
+        List<EmployeeDto> listDTO = mapper.toDto(dtos);
+        log.log(!listDTO.isEmpty()
+                        ? Level.INFO
+                        : Level.WARNING
+                , "Результат поиска сущностей: {0}", listDTO);
+        return new ResponseEntity<>(listDTO
+                , !listDTO.isEmpty() ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
 }

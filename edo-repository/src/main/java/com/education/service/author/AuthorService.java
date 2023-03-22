@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface AuthorService {
     // save, delete, findById, findAllById
-    void save(AuthorDto author);
+    AuthorDto save(AuthorDto author);
     void delete(Long id);
     Author findById(Long id);
     List<AuthorDto> findAllById(List<Long> id);

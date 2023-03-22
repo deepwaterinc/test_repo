@@ -3,13 +3,13 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 /**
  * @author Степан Ритман
@@ -70,4 +70,6 @@ public class EmployeeDto {
     @ApiModelProperty("Дата архивирования")
     private ZonedDateTime archivedDate;
 
+    @ApiModelProperty("Типы оповещения, которые выбрали пользователи")
+    private List<NotificationDto> notification;
 }

@@ -1,29 +1,39 @@
 package com.education.service.appeal.impl;
 
+import com.education.author_feign.service.AuthorService;
+import com.education.model.dto.AppealAbbreviatedDto;
 import com.education.model.dto.AppealDto;
 import com.education.service.appeal.AppealService;
+import com.education.service.nomenclature.NomenclatureService;
+import com.education.service.question.QuestionService;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
-import com.netflix.discovery.shared.Application;
 import lombok.RequiredArgsConstructor;
 
 import org.apache.http.HttpHost;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
+
+import static org.apache.commons.lang.StringUtils.EMPTY;
 
 @Service
 @RequiredArgsConstructor
 public class AppealServiceImpl implements AppealService {
 
+    private final QuestionService questionService;
+
+    private final AuthorService authorService;
+
     private final RestTemplate TEMPLATE;
 
     private final EurekaClient EUREKA_CLIENT;
+
+    private final NomenclatureService nomenclatureService;
 
     private final String BASE_URL = "/api/repository/appeal";
 
@@ -37,34 +47,44 @@ public class AppealServiceImpl implements AppealService {
         return instances.get((int) (instances.size() * Math.random()));
     }
 
-    private URI getURIByInstance(InstanceInfo instanceInfo, String pathVariable) {
-        URI uri = UriComponentsBuilder.fromPath(BASE_URL + pathVariable)
+    private String getURIByInstance(InstanceInfo instanceInfo, String pathVariable) {
+        return UriComponentsBuilder.fromPath(BASE_URL + pathVariable)
                 .scheme(HttpHost.DEFAULT_SCHEME_NAME)
                 .host(instanceInfo.getHostName())
                 .port(instanceInfo.getPort())
-                .buildAndExpand(pathVariable)
-                .toUri();
-        return uri;
+                .build().toString();
     }
 
     @Override
-    public void save(AppealDto appeal) {
+    public AppealDto save(AppealDto appealDto) {
         InstanceInfo instanceInfo = getInstance();
-        URI uri = getURIByInstance(instanceInfo, "");
-        TEMPLATE.postForObject(uri, appeal, AppealDto.class);
+        var savedAuthors = appealDto.getAuthors()
+                .stream().map(authorService::save)
+                .map(ResponseEntity::getBody).toList();
+        var savedQuestions = appealDto.getQuestion()
+                .stream().map(questionService::save).toList();
+        appealDto.setAuthors(savedAuthors);
+        appealDto.setQuestion(savedQuestions);
+        final String NUMBER = nomenclatureService
+                .getNumberFromTemplate(appealDto.getNomenclature());
+        appealDto.setNumber(NUMBER);
+
+        var response = TEMPLATE.postForObject(getURIByInstance
+                (instanceInfo, EMPTY), appealDto, AppealDto.class);
+        return response;
     }
 
     @Override
     public void moveToArchive(Long id) {
         InstanceInfo instanceInfo = getInstance();
-        URI uri = getURIByInstance(instanceInfo, String.format("/toArchive/%s", id.toString()));
+        var uri = getURIByInstance(instanceInfo, String.format("/toArchive/%s", id.toString()));
         TEMPLATE.put(uri, null);
     }
 
     @Override
     public AppealDto findById(Long id) {
         InstanceInfo instanceInfo = getInstance();
-        URI uri = getURIByInstance(instanceInfo, String.format("/byId/%s", id.toString()));
+        var uri = getURIByInstance(instanceInfo, String.format("/byId/%s", id.toString()));
         AppealDto response = TEMPLATE.getForObject(uri, AppealDto.class);
         return response;
     }
@@ -73,7 +93,7 @@ public class AppealServiceImpl implements AppealService {
     public List<AppealDto> findAllById(Iterable<Long> ids) {
         InstanceInfo instanceInfo = getInstance();
         String path = ids.toString().substring(1, ids.toString().length() - 1);
-        URI uri = getURIByInstance(instanceInfo, String.format("/allById/%s", path));
+        var uri = getURIByInstance(instanceInfo, String.format("/allById/%s", path));
         AppealDto[] response = TEMPLATE.getForObject(uri, AppealDto[].class);
         return Arrays.asList(response);
     }
@@ -81,7 +101,7 @@ public class AppealServiceImpl implements AppealService {
     @Override
     public AppealDto findByIdNotArchived(Long id) {
         InstanceInfo instanceInfo = getInstance();
-        URI uri = getURIByInstance(instanceInfo, String.format("/notArchived/%s", id.toString()));
+        var uri = getURIByInstance(instanceInfo, String.format("/notArchived/%s", id.toString()));
         AppealDto response = TEMPLATE.getForObject(uri, AppealDto.class);
         return response;
     }
@@ -90,8 +110,20 @@ public class AppealServiceImpl implements AppealService {
     public List<AppealDto> findAllByIdNotArchived(Iterable<Long> ids) {
         InstanceInfo instanceInfo = getInstance();
         String path = ids.toString().substring(1, ids.toString().length() - 1);
-        URI uri = getURIByInstance(instanceInfo, String.format("/allNotArchived/%s", path));
+        var uri = getURIByInstance(instanceInfo, String.format("/allNotArchived/%s", path));
         AppealDto[] response = TEMPLATE.getForObject(uri, AppealDto[].class);
+        return Arrays.asList(response);
+    }
+
+    @Override
+    public List<AppealAbbreviatedDto> findAllByIdEmployee(Long first, Long amount) {
+        InstanceInfo instanceInfo = getInstance();
+        String path = "/appealsByEmployee/?first=" +
+                first +
+                "&amount=" +
+                amount;
+        var uri = getURIByInstance(instanceInfo, path);
+        AppealAbbreviatedDto[] response = TEMPLATE.getForObject(uri, AppealAbbreviatedDto[].class);
         return Arrays.asList(response);
     }
 }

@@ -6,6 +6,7 @@ import com.education.repository.theme.ThemeRepository;
 import com.education.service.theme.ThemeService;
 import com.education.util.Mapper.impl.ThemeMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,26 +58,31 @@ public class ThemeServiceImpl implements ThemeService {
     /**
      * Выдает темы по списку id
      */
+    @Cacheable(value = "cacheForAllTheme")
     @Transactional(readOnly = true, rollbackFor = Exception.class)
     public List<ThemeDto> findAllById(List<Long> ids) {
 
         return themeRepository.findAllById(ids).stream().map(mapper::toDto).toList();
-        }
+    }
+
 
     /**
      * Выдает тему по id, если она не в архивных (т.е. архивная дата отсутствует)
      */
+
+
     @Transactional(readOnly = true, rollbackFor = Exception.class)
     public ThemeDto findByIdNotArchived(Long id) {
 
         return themeRepository.findByIdAndArchivedDateIsNull(id) == null
                 ? null
                 : mapper.toDto(themeRepository.findByIdAndArchivedDateIsNull(id));
-        }
+    }
 
     /**
      * Выдает по списку id соответствующие темы, которые не являются архивными
      */
+    @Cacheable(value = "сacheForAllThemeNotArchive")
     @Transactional(readOnly = true, rollbackFor = Exception.class)
     public List<ThemeDto> findAllByIdNotArchived(List<Long> ids) {
 

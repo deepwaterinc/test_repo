@@ -35,9 +35,14 @@ public class QuestionServiceImpl implements QuestionService {
      * @param question
      */
     @Override
-    public void save(QuestionDto question) {
-        var uri = getUri("");
-        rest.postForObject(uri, question, QuestionDto.class);
+    public QuestionDto save(QuestionDto question) {
+        var request = new RequestEntity(question, HttpMethod.POST, getUri(""));
+
+        var response = rest.exchange(request,QuestionDto.class);
+        if (!response.getStatusCode().is2xxSuccessful()) {
+            throw new RuntimeException("Can't save the theme");
+        }
+        return response.getBody();
     }
 
     /**

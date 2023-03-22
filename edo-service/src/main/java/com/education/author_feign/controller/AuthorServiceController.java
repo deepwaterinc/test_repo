@@ -36,7 +36,7 @@ public class AuthorServiceController {
     @Operation(summary = "Сохранение сущности")
     @PostMapping
     public ResponseEntity<AuthorDto> saveAuthor(@RequestBody AuthorDto author) {
-        authorService.save(author);
+        author = authorService.save(author).getBody();
         log.info("сохранил AuthorDto.class");
         return author != null ?
                 ResponseEntity.ok(author)

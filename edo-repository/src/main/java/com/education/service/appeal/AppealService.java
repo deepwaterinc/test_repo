@@ -6,7 +6,7 @@ import com.education.entity.Appeal;
 import java.util.List;
 
 public interface AppealService {
-    void save(Appeal appeal);
+    Appeal save(Appeal appeal);
 
     void moveToArchive(Long id);
 
@@ -17,4 +17,8 @@ public interface AppealService {
     Appeal findByIdNotArchived(Long id);
 
     List<Appeal> findAllByIdNotArchived(Iterable<Long> ids);
+
+    List<Appeal> findAllByIdEmployee(Long id, Long first, Long amount);
+
+    void moveToUnderConsideration(Long resolutionId);
 }

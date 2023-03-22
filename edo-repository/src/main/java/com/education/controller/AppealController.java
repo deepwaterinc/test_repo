@@ -1,7 +1,10 @@
 package com.education.controller;
 
+import com.education.entity.Appeal;
+import com.education.model.dto.AppealAbbreviatedDto;
 import com.education.model.dto.AppealDto;
 import com.education.service.appeal.AppealService;
+import com.education.util.Mapper.impl.AppealAbbreviatedMapper;
 import com.education.util.Mapper.impl.AppealMapper;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -12,8 +15,6 @@ import org.apache.logging.log4j.Level;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.education.entity.Appeal;
-
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class AppealController {
     final private AppealService appealService;
 
     final private AppealMapper mapper;
+    final private AppealAbbreviatedMapper AppealAbbreviatedMapper;
 
 
     @ApiOperation(value = "Сохранение сущности в БД")
@@ -34,14 +36,11 @@ public class AppealController {
             @ApiResponse(code = 409, message = "Сущность не сохранена")
     })
     @PostMapping
-    public ResponseEntity<AppealDto> saveAppeal(@RequestBody Appeal appeal) {
-        appealService.save(appeal);
-        if (appealService.findById(appeal.getId()) != null) {
-            log.log(Level.INFO, "Сущность сохранена или обновлена");
-            return new ResponseEntity<>(mapper.toDto(appeal), HttpStatus.CREATED);
-        }
-        log.log(Level.WARN, "Сущность не сохранена и не обновлена");
-        return new ResponseEntity<>(mapper.toDto(appeal), HttpStatus.CONFLICT);
+    public ResponseEntity<AppealDto> saveAppeal(@RequestBody AppealDto appealDto) {
+
+        AppealDto appealAfter = mapper.toDto(appealService.save(mapper.toEntity(appealDto)));
+        log.info("Создано ОБРАЩЕНИЕ с id {}", appealAfter.getId());
+        return new ResponseEntity<>(appealAfter, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Обновление даты архивации")
@@ -118,5 +117,26 @@ public class AppealController {
         }
         log.log(Level.INFO, "Сущности найдены");
         return new ResponseEntity<>(mapper.toDto(appeal), HttpStatus.OK);
+    }
+
+    /**
+     * В качестве id объекта Principal используется заглушка (idPrincipal = 1L)
+     */
+    @ApiOperation(value = "Получение сущностей Appeal для Employee creator (?first=1&amount=1)")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Сущность найдена"),
+            @ApiResponse(code = 404, message = "Сущность не найдена")
+    })
+    @GetMapping(value = "/appealsByEmployee/")
+    public ResponseEntity<List<AppealAbbreviatedDto>> findByIdEmployee(@RequestParam("first") Long first,
+                                                                       @RequestParam("amount") Long amount) {
+        Long idPrincipal = 1L;
+        List<Appeal> appeal = appealService.findAllByIdEmployee(idPrincipal, first, amount);
+        if (appeal == null && appeal.isEmpty()) {
+            log.log(Level.WARN, "Сущности не найдены");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        log.log(Level.INFO, "Сущности найдены");
+        return new ResponseEntity<>(AppealAbbreviatedMapper.toDto(appeal), HttpStatus.OK);
     }
 }

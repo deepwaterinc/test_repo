@@ -104,4 +104,13 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         }
         return mapper.toDto(nomenclatures);
     }
+
+    @Transactional(readOnly = true, rollbackFor = Exception.class)
+    @Override
+    public List<Nomenclature> findByIndex(String index) {
+        if (index.length() < 2) {
+            return null;
+        } else return nomenclatureRepository.findByIndex(index);
+    }
+
 }
