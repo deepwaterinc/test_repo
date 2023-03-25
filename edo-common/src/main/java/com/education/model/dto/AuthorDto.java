@@ -3,6 +3,7 @@ package com.education.model.dto;
 import com.education.model.enumEntity.EnumEmployment;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @ApiModel("Класс DTO для сущности Author(автор)")
@@ -15,6 +16,7 @@ import lombok.*;
 public class AuthorDto {
 
     @ApiModelProperty("id автора")
+    @NotBlank
     private Long id;
 
     @ApiModelProperty("Имя автора")

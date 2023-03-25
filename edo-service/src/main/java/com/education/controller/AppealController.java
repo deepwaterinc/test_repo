@@ -2,6 +2,8 @@ package com.education.controller;
 
 import com.education.model.dto.AppealAbbreviatedDto;
 import com.education.model.dto.AppealDto;
+import com.education.configuration.ObjectsSupplier;
+import com.education.model.util.exceptions.AppealNotValidException;
 import com.education.service.appeal.AppealService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -15,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.http.ResponseEntity.ok;
 
 @ApiOperation("AppealDto API")
 @Log4j2
@@ -134,6 +138,42 @@ public class AppealController {
         }
         log.log(Level.INFO, "Сущности найдены");
         return new ResponseEntity<>(appeal, HttpStatus.OK);
+    }
+
+
+
+    @ExceptionHandler
+    public ResponseEntity<String> validationHandler(AppealNotValidException e) {
+
+        var msg = e.getMessage();
+        var testRespEntity = new ResponseEntity<>(msg, HttpStatus.OK);
+        return testRespEntity;
+//        return ResponseEntity.badRequest().body("Exception Handler");
+    }
+
+    @GetMapping("/tSave")        //todo delete it and remove dependency
+    public ResponseEntity<String> testSaveAppeal() {
+
+        ObjectsSupplier objectsSupplier = new ObjectsSupplier();
+        AppealDto appeal = objectsSupplier.getAppeal();
+
+
+        AppealDto badAppSummaryMore200ThemeNull = objectsSupplier.getBadAppSummaryMore200ThemeNull();
+        AppealDto badNoSendingNoQuestion = objectsSupplier.getBadAppNoSendingNoQuestion();
+        AppealDto badEmailLastMore60FirstnameAbsent = objectsSupplier.getBadEmailLastMore60FirstnameAbsent();
+        AppealDto badEmpty = objectsSupplier.getBadEmpty();
+        AppealDto appealBadFirstAuthorNoNameSecondAuthorNoLastnameThirdBadEmailNoPhone =
+                objectsSupplier.getBad_FirstAuthorNoName_SecondAuthorNoLastnameLargeFirstname_ThirdBadEmailNoPhone();
+        AppealDto badNoQuestionNoSendingMethod = objectsSupplier.getBadNoQuestionNoSendingMethod();
+        AppealDto badFirstQuestionNoSummarySecondQuestionNoThemeThirdQuestionLargeSummaryFirstAuthorLargeLastnameNoEmail =
+                objectsSupplier.getBad_FirstQuestionNoSummary_SecondQuestionNoTheme_ThirdQuestionLargeSummary_FirstAuthorLargeLastnameNoEmail();
+        appealService.save(badAppSummaryMore200ThemeNull);
+        return ResponseEntity.ok("welcome dungeon master");
+    }
+
+    @GetMapping("/hallo")   //todo delete
+    public ResponseEntity<String> hallo() {
+        return ResponseEntity.ok("hallo dungeon master");
     }
 
 }
