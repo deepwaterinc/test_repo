@@ -12,6 +12,7 @@ import com.netflix.discovery.EurekaClient;
 import lombok.RequiredArgsConstructor;
 
 import org.apache.http.HttpHost;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -19,6 +20,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+
+import static org.apache.logging.log4j.util.Strings.EMPTY;
 
 @Service
 @RequiredArgsConstructor
@@ -56,26 +59,25 @@ public class AppealServiceImpl implements AppealService {
 
     @Override
     public AppealDto save(AppealDto appealDto) {
-//        InstanceInfo instanceInfo = getInstance();
+        InstanceInfo instanceInfo = getInstance();
+        String validateResult = validateAppealDto(appealDto);
+        if (!validateResult.isEmpty()) {
+            throw new AppealNotValidException(validateResult);
+        }
+        var savedAuthors = appealDto.getAuthors()
+                .stream().map(authorService::save)
+                .map(ResponseEntity::getBody).toList();
+        var savedQuestions = appealDto.getQuestion()
+                .stream().map(questionService::save).toList();
+        appealDto.setAuthors(savedAuthors);
+        appealDto.setQuestion(savedQuestions);
+        final String NUMBER = nomenclatureService
+                .getNumberFromTemplate(appealDto.getNomenclature());
+        appealDto.setNumber(NUMBER);
 
-        validateAppealDto(appealDto);   //todo disable comments
-//
-//        var savedAuthors = appealDto.getAuthors()
-//                .stream().map(authorService::save)
-//                .map(ResponseEntity::getBody).toList();
-//        var savedQuestions = appealDto.getQuestion()
-//                .stream().map(questionService::save).toList();
-//        appealDto.setAuthors(savedAuthors);
-//        appealDto.setQuestion(savedQuestions);
-//        final String NUMBER = nomenclatureService
-//                .getNumberFromTemplate(appealDto.getNomenclature());
-//        appealDto.setNumber(NUMBER);
-//
-//        var response = TEMPLATE.postForObject(getURIByInstance
-//                (instanceInfo, EMPTY), appealDto, AppealDto.class);
-//        return response;
-        throw new AppealNotValidException("everything OK");
-
+        var response = TEMPLATE.postForObject(getURIByInstance
+                (instanceInfo, EMPTY), appealDto, AppealDto.class);
+        return response;
     }
 
     @Override

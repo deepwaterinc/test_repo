@@ -4,10 +4,8 @@ package com.education.client;
 import com.education.model.dto.EmployeeDto;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
-import com.netflix.discovery.converters.Auto;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpHost;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
@@ -27,7 +25,7 @@ import java.util.Objects;
  * Класс для отправк запросов в edo-repositotry
  */
 @Component
-
+@RequiredArgsConstructor
 public class EmployeeRestTemplateClient {
     /**
      * Объект класса EurekaClient
@@ -37,14 +35,6 @@ public class EmployeeRestTemplateClient {
      * Объект класса RestTemplate
      */
     private final RestTemplate restTemplate;
-
-
-    @Autowired
-    public EmployeeRestTemplateClient(EurekaClient eurekaClient, RestTemplate restTemplate) {
-        this.eurekaClient = eurekaClient;
-        this.restTemplate = restTemplate;
-    }
-
     /**
      * Базовый URL для API edo-service
      */
