@@ -140,7 +140,7 @@ public class AppealServiceImpl implements AppealService {
 
         StringBuilder stringBuilder = new StringBuilder();
         Consumer<String> addIssue = (s) -> {
-            stringBuilder.append(s).append("\r");
+            stringBuilder.append(s).append(";");
         };
 
         var questions = appealDto.getQuestion();
@@ -219,6 +219,10 @@ public class AppealServiceImpl implements AppealService {
 
         if (appealDto.getSendingMethod() == null) {
             addIssue.accept("appeal has no sending method");
+        }
+
+        if (!stringBuilder.isEmpty()) {
+            stringBuilder.insert(0, "Appeal not valid;");
         }
 
         return stringBuilder.toString();
