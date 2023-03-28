@@ -1,3 +1,5 @@
+security:
+  enabled: false
 spring:
   security:
     oauth2:
@@ -14,8 +16,8 @@ spring:
             user-name-attribute: preferred_username
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8181/realms/edo-project-realm
-          jwk-set-uri: ${spring.security.oauth2.resource-server.jwt.issuer-uri}/protocol/openid-connect/certs
+          issuer-uri: ${spring.security.oauth2.client.provider.keycloak.issuer-uri}
+          jwk-set-uri: ${spring.security.oauth2.client.provider.keycloak.issuer-uri}/protocol/openid-connect/certs
   jpa:
     properties:
       hibernate:

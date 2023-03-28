@@ -35,7 +35,7 @@ stages:
 #      - edo-repository/target/edo-repository-0.0.1.jar
 #      - edo-rest/target/edo-rest-0.0.1.jar
 #      - edo-scheduler/target/edo-scheduler-0.0.1.jar
-#      - edo-security/target/edo-security-0.0.1.jar
+#      - edo-common-config/target/edo-common-config-0.0.1.jar
 #      - edo-service/target/edo-service-0.0.1.jar
 #    expire_in: 3 days
 

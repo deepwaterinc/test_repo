@@ -1,7 +1,18 @@
-Для запуска keycloak через docker введите данную команду в терминале:
-docker run -p 8181:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:20.0.3 start-dev
+Для активации аутентификации в модуле, необходимо, в модуле, в котором хотите включить убрать
+из main класса и изменить настройку в application.yml security.enabled с false на true
 
-Далее пройдя по адресу http://localhost:8181/ выбираем Administration Console и будет окно для ввода логина и пароля для keycloak.
+<code>
+(exclude = OAuth2ClientAutoConfiguration.class)
+</code>
+
+и настроить Keycloak согласно документации
+
+Для запуска keycloak через docker введите данную команду в терминале:
+docker run -p 8181:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:20.0.3
+start-dev
+
+Далее пройдя по адресу http://localhost:8181/ выбираем Administration Console и будет окно для ввода логина и пароля для
+keycloak.
 ![img.png](images for readme/img.png)
 
 Введите username=admin, password=admin.
@@ -52,14 +63,13 @@ docker run -p 8181:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin
 При первом переходе на endpoint появится окно с вводом логина и пароля. 
 Там необходимо будет ввести admin и пароль, который вы придумали при создании юзера.
 
-
 **Работа через Postman**
 
 Сначала необходимо получить токен через post-запрос 
 по адресу http://localhost:8181/realms/edo-project-realm/protocol/openid-connect/token
 
 В теле запроса вводим:
-  
+
 KEY      VALUE
 
 grant_type -> password
