@@ -3,6 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.education</groupId>
+        <artifactId>edo</artifactId>
+        <version>0.0.1</version>
+    </parent>
+
+    <artifactId>edo-rest</artifactId>
+
     <dependencies>
         <dependency>
             <groupId>com.education</groupId>
@@ -10,28 +18,12 @@
             <version>0.0.1</version>
             <scope>compile</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml -->
         <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-xml</artifactId>
-            <version>2.14.1</version>
+            <groupId>com.education</groupId>
+            <artifactId>edo-common-config</artifactId>
+            <version>0.0.1</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.14.1</version>
-        </dependency>
-
     </dependencies>
-    <parent>
-        <groupId>com.education</groupId>
-        <artifactId>edo</artifactId>
-        <version>0.0.1</version>
-    </parent>
 
-
-
-    <artifactId>edo-rest</artifactId>
 
 </project>

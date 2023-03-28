@@ -3,7 +3,28 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.education</groupId>
+        <artifactId>edo</artifactId>
+        <version>0.0.1</version>
+    </parent>
+    <description>Модуль для бизнес логики</description>
+
+    <artifactId>edo-service</artifactId>
+
+    <properties>
+        <docx4j.version>8.0.0</docx4j.version>
+        <itextpdf.version>7.0.2</itextpdf.version>
+    </properties>
+
+
     <dependencies>
+        <dependency>
+            <groupId>com.education</groupId>
+            <artifactId>edo-common-config</artifactId>
+            <version>0.0.1</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
@@ -103,18 +124,4 @@
             <version>${itextpdf.version}</version>
         </dependency>
     </dependencies>
-
-    <properties>
-        <itextpdf.version>7.0.2</itextpdf.version>
-        <docx4j.version>8.0.0</docx4j.version>
-    </properties>
-    <parent>
-        <groupId>com.education</groupId>
-        <artifactId>edo</artifactId>
-        <version>0.0.1</version>
-    </parent>
-    <description>Модуль для бизнес логики</description>
-
-    <artifactId>edo-service</artifactId>
-
 </project>
