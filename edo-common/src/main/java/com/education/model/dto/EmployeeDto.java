@@ -58,6 +58,9 @@ public class EmployeeDto {
     @ApiModelProperty("Рабочий номер телефона")
     private String workPhone;
 
+    @ApiModelProperty("Рабочая почта")
+    private String workEmail;
+
     @ApiModelProperty("Дата рождения")
     private ZonedDateTime birthDate;
 
