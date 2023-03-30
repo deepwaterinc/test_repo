@@ -23,7 +23,7 @@ public class RabbitRepoListenerExample {
     private AddressRepository addressRepository;
 
     private AddressMapper mapper;
-    @RabbitListener(queues =RabbitConstant.addressCreateDBQueue)
+    @RabbitListener(queues = RabbitConstant.addressCreateDBQueue)
     public void createAddress(AddressDto addressDto) {
 
         Address address = mapper.toEntity(addressDto);
