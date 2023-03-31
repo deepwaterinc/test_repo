@@ -1,5 +1,5 @@
 security:
-  enabled: false
+  enabled: true
 spring:
   security:
     oauth2:
