@@ -54,13 +54,13 @@ public class EmailQueueListener {
     }
 
     /**
-     * Метод для рассылки оповещений всем адресантам и подписантам из обращения
+     * Метод для рассылки оповещений по почте всем адресантам и подписантам из обращения
      *
      * @param appealDto - обращение
      */
     private void sendNotificationOnAppeal(AppealDto appealDto) {
         try {
-            String templateMessage = "Добрый день, %1$s!\n%2$s с номером %3$s.\n" +
+            var templateMessage = "Добрый день, %1$s!\n%2$s с номером %3$s.\n" +
                     getURIByInstance(getInstance(), "/byId/" + appealDto.getId()).toURL();
 
             for (EmployeeDto emp : appealDto.getAddressee()) {
@@ -75,7 +75,6 @@ public class EmailQueueListener {
                                 "Вы являетесь Подписантом в Обращении", appealDto.getId().toString()));
             }
         } catch (MalformedURLException e) {
-            log.log(Level.ERROR, "Проблема с URI");
             throw new RuntimeException(e);
         }
         log.log(Level.INFO, "Все письма о создании нового обращения отправлены");

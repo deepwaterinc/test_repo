@@ -39,7 +39,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendNotificationOnAppeal(AppealDto appealDto) {
         amqpTemplate.convertAndSend(RabbitConstant.exchange, RabbitConstant.addressCreateEmailQueue, appealDto);
 
-        NotificationDto notificationDto = new NotificationDto();
+        var notificationDto = new NotificationDto();
         notificationDto.setEnumNotification(EnumNotification.EMAIL);
         notificationService.save(notificationDto);
 
