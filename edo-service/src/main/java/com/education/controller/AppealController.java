@@ -37,7 +37,7 @@ public class AppealController {
     public ResponseEntity<AppealDto> saveAppeal(@ApiParam("appealDto") @RequestBody AppealDto appealDto) {
         AppealDto appealAfter = appealService.save(appealDto);
         if (appealAfter.getId() != null) {
-            if (appealAfter.getAppealStatus().equals(EnumAppealStatus.NEW)) {
+            if (EnumAppealStatus.NEW.equals(appealAfter.getAppealStatus())) {
                 emailService.sendNotificationOnAppeal(appealAfter);
             }
             log.log(Level.INFO, "Сущность сохранена или обновлена");

@@ -60,23 +60,21 @@ public class EmailQueueListener {
      */
     private void sendNotificationOnAppeal(AppealDto appealDto) {
         try {
-            var templateMessage = "Добрый день, %1$s!\n%2$s с номером %3$s.\n" +
+            var templateMessage = "Добрый день, %1$s!\n%2$s с номером " + appealDto.getNumber() + "\n" +
                     getURIByInstance(getInstance(), "/byId/" + appealDto.getId()).toURL();
-
-            for (EmployeeDto emp : appealDto.getAddressee()) {
-                emailService.sendSimpleEmail(emp.getWorkEmail(), "Обращение № " + appealDto.getNumber(),
-                        templateMessage.formatted(emp.getFioNominative(),
-                                "Для вас адресовано Обращение", appealDto.getId().toString()));
-            }
-
-            for (EmployeeDto emp : appealDto.getSigner()) {
-                emailService.sendSimpleEmail(emp.getWorkEmail(), "Обращение № " + appealDto.getNumber(),
-                        templateMessage.formatted(emp.getFioNominative(),
-                                "Вы являетесь Подписантом в Обращении", appealDto.getId().toString()));
-            }
+            assembleAndSendEmail(appealDto.getAddressee(), templateMessage, "Для вас адресовано Обращение", appealDto.getNumber());
+            assembleAndSendEmail(appealDto.getSigner(), templateMessage, "Вы являетесь Подписантом в Обращении", appealDto.getNumber());
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
         log.log(Level.INFO, "Все письма о создании нового обращения отправлены");
+    }
+
+    private void assembleAndSendEmail(List<EmployeeDto> employers, String template, String greeting, String id) {
+        for (EmployeeDto emp : employers) {
+            emailService.sendSimpleEmail(emp.getWorkEmail(), "Обращение № " + id,
+                    template.formatted(emp.getFioNominative(),
+                            greeting));
+        }
     }
 }
