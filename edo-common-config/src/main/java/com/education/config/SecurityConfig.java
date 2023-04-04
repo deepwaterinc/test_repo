@@ -15,13 +15,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 @EnableWebSecurity
 @Configuration
-@ConditionalOnProperty(prefix = "security", name = "enabled", havingValue = "true")
 class SecurityConfig {
 
     private final JwtAuthConverter jwtAuthConverter;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    @ConditionalOnProperty(prefix = "security", name = "enabled", havingValue = "true")
+    public SecurityFilterChain filterChainAuthenticated(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests()
                 .requestMatchers("/api/*")
                 .hasRole("ADMIN")
@@ -31,6 +31,15 @@ class SecurityConfig {
         http.oauth2ResourceServer()
                 .jwt()
                 .jwtAuthenticationConverter(jwtAuthConverter);
+        return http.build();
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "security", name = "enabled", havingValue = "false")
+    public SecurityFilterChain filterChainPermitAll(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests()
+                .anyRequest()
+                .permitAll();
         return http.build();
     }
 }
