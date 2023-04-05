@@ -22,15 +22,15 @@ import java.io.FileNotFoundException;
 @AllArgsConstructor
 public class EmailServiceImpl implements EmailService {
     /**
-     * Репозиторий для работы с БД
+     * Объект для работы с почтой
      */
-    public JavaMailSender emailSender;
+    private final JavaMailSender emailSender;
 
     /**
      * Метод для отправки email без attachment
-     * @param toAddress
-     * @param subject
-     * @param message
+     * @param toAddress - адрес получателя
+     * @param subject - тема письма
+     * @param message - текст письма
      */
     @Override
     public void sendSimpleEmail(String toAddress, String subject, String message) {
@@ -43,9 +43,9 @@ public class EmailServiceImpl implements EmailService {
 
     /**
      * Метод для отправки email
-     * @param toAddress
-     * @param subject
-     * @param message
+     * @param toAddress - адрес получателя
+     * @param subject - тема письма
+     * @param message - текст письма
      */
     @Override
     public void sendEmailWithAttachment(String toAddress, String subject, String message, String attachment)

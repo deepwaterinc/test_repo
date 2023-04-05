@@ -2,7 +2,9 @@ package com.education.controller;
 
 import com.education.model.dto.AppealAbbreviatedDto;
 import com.education.model.dto.AppealDto;
+import com.education.model.enumEntity.EnumAppealStatus;
 import com.education.service.appeal.AppealService;
+import com.education.service.email.EmailService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -24,6 +26,7 @@ import java.util.List;
 public class AppealController {
 
     final private AppealService appealService;
+    final private EmailService emailService;
 
     @ApiOperation(value = "Сохранение сущности в БД")
     @ApiResponses(value = {
@@ -34,6 +37,9 @@ public class AppealController {
     public ResponseEntity<AppealDto> saveAppeal(@ApiParam("appealDto") @RequestBody AppealDto appealDto) {
         AppealDto appealAfter = appealService.save(appealDto);
         if (appealAfter.getId() != null) {
+            if (EnumAppealStatus.NEW.equals(appealAfter.getAppealStatus())) {
+                emailService.sendNotificationOnAppeal(appealAfter);
+            }
             log.log(Level.INFO, "Сущность сохранена или обновлена");
             return new ResponseEntity<>(appealAfter, HttpStatus.CREATED);
         }
