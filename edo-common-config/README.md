@@ -1,9 +1,5 @@
-Для активации аутентификации в модуле, необходимо, в модуле, в котором хотите включить убрать
-из main класса и изменить настройку в application.yml security.enabled с false на true
-
-<code>
-(exclude = OAuth2ClientAutoConfiguration.class)
-</code>
+Для активации аутентификации в модуле, необходимо, в модуле, в котором хотите включить
+изменить настройку в application.yml security.enabled с false на true и раскомментировать profiles:include:security
 
 и настроить Keycloak согласно документации
 
