@@ -9,13 +9,13 @@ import org.springframework.context.annotation.Primary;
 @Configuration
 public class MinioConfiguration {
 
-    @Value("${minio.access.key}")
+    @Value("${minio.accessKey}")
     private String accessKey;
 
-    @Value("${minio.access.secret}")
+    @Value("${minio.secretKey}")
     private String secretKey;
 
-    @Value("${minio.url}")
+    @Value("${minio.endpoint}")
     private String minioUrl;
 
     @Bean

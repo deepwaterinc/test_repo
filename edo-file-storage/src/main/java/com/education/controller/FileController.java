@@ -2,6 +2,7 @@ package com.education.controller;
 
 import com.education.dto.FileDto;
 import com.education.service.MinioService;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -20,9 +21,10 @@ import static org.springframework.web.servlet.HandlerMapping.BEST_MATCHING_PATTE
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/file")
+@RequestMapping(value = "/api/file-storage")
 public class FileController {
 
+    @ApiModelProperty("сервис для контроллера")
     private final MinioService minioService;
 
     @Autowired
@@ -31,21 +33,19 @@ public class FileController {
     }
 
     @ApiOperation(value = "Получить список всех файлов")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved"),
-            @ApiResponse(code = 404, message = "Not found - The address was not found")
-    })
     @GetMapping
     public ResponseEntity<Object> getFiles() {
         return ResponseEntity.ok(minioService.getListObjects());
     }
 
+    @ApiOperation(value = "Загрузка файла в MinIO", notes = "Сохраняет файл без расширения с UUID вместо названия")
     @PostMapping(value = "/upload")
     public ResponseEntity<Object> upload(@ModelAttribute FileDto request) {
         return ResponseEntity.ok().body(minioService.uploadFile(request));
     }
 
-    @GetMapping(value = "/**")
+    @ApiOperation(value = "Загрузка файла из MinIO", notes = "Возвращает файл по названию(UUID)")
+    @GetMapping(value = "/download/**")
     public ResponseEntity<Object> getFile(HttpServletRequest request) throws IOException {
         String pattern = (String) request.getAttribute(BEST_MATCHING_PATTERN_ATTRIBUTE);
         String filename = new AntPathMatcher().extractPathWithinPattern(pattern, request.getServletPath());
