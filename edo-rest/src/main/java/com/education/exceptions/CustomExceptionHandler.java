@@ -11,11 +11,13 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<String> notValidAppealException(HttpClientErrorException e) {
-        var msg = e.getMessage();
-        if (msg.startsWith("400 : \"Appeal not valid")) {
-            msg = msg.replace(';', '\r');
-            msg = msg.replace("\"", "");
-            return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        if (e.getStatusCode() == HttpStatus.BAD_REQUEST) {
+            var msg = e.getMessage();
+            if (msg.startsWith("400 : \"Appeal not valid")) {
+                msg = msg.replace(';', '\r')
+                        .replace("\"", "");
+                return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+            }
         }
         throw e;
     }

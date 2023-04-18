@@ -10,7 +10,6 @@ import com.education.service.question.QuestionService;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import lombok.RequiredArgsConstructor;
-
 import org.apache.http.HttpHost;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,6 +21,8 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static org.apache.logging.log4j.util.Strings.EMPTY;
+import static org.springframework.util.CollectionUtils.isEmpty;
+import static org.springframework.util.StringUtils.hasLength;
 
 @Service
 @RequiredArgsConstructor
@@ -139,26 +140,25 @@ public class AppealServiceImpl implements AppealService {
         final String phoneRegEx = "7\\d{10}";
 
         StringBuilder stringBuilder = new StringBuilder();
-        Consumer<String> addIssue = (s) -> {
-            stringBuilder.append(s).append(";");
-        };
+        Consumer<String> addIssue = (s) -> stringBuilder.append(s).append(";");
 
         var questions = appealDto.getQuestion();
-        if (questions == null || questions.size() == 0) {
+        if (isEmpty(questions)) {
             addIssue.accept("field question is empty");
         } else {
 
             for (var question : questions) {
 
-                if (question.getSummary() == null || question.getSummary().equals("")) {
+                if (!hasLength(question.getSummary())) {
+
                     addIssue.accept(String.format("question id: %d  field summary is empty or NULL",
                             question.getId()));
-                } else {
-                    if (question.getSummary().length() > 200) {
-                        addIssue.accept(String.format("question id: %d field Summary has more then 200 characters",
-                                question.getId()));
-                    }
+                } else if (question.getSummary().length() > 200) {
+
+                    addIssue.accept(String.format("question id: %d field Summary has more then 200 characters",
+                            question.getId()));
                 }
+
                 if (question.getTheme() == null) {
                     addIssue.accept(String.format("question id: %d theme is empty", question.getId()));
                 }
@@ -166,7 +166,7 @@ public class AppealServiceImpl implements AppealService {
         }
 
         var authors = appealDto.getAuthors();
-        if (authors == null || authors.size() == 0) {
+        if (isEmpty(authors)) {
             addIssue.accept("this appeal has no authors");
         } else {
 
@@ -174,45 +174,36 @@ public class AppealServiceImpl implements AppealService {
                 var authorEmail = author.getEmail();
                 if (authorEmail == null) {
                     addIssue.accept(String.format("author with id: %d field email is NULL", author.getId()));
-                } else {
-                    if (!authorEmail.matches(emailRegEx)) {
-                        addIssue.accept(String.format("author with id: %d has email, but incorrect format",
-                                author.getId()));
-                    }
+                } else if (!authorEmail.matches(emailRegEx)) {
+
+                    addIssue.accept(String.format("author with id: %d has email, but incorrect format", author.getId()));
                 }
 
-
                 var authorMobilePhone = author.getMobilePhone();
-                if (authorMobilePhone == null) {
+                if (!hasLength(authorMobilePhone)) {
                     addIssue.accept(String.format("author with id: %d has email is NULL", author.getId()));
-                } else {
-                    if (!authorMobilePhone.matches(phoneRegEx)) {
-                        addIssue.accept(String.format("author with id: %d has mobilePhone, but incorrect format",
-                                author.getId()));
+                } else if (!authorMobilePhone.matches(phoneRegEx)) {
 
-                    }
+                    addIssue.accept(String.format("author with id: %d has mobilePhone, but incorrect format",
+                            author.getId()));
                 }
 
                 var authorFirstName = author.getFirstName();
-                if (authorFirstName == null || authorFirstName.isEmpty()) {
+                if (!hasLength(authorFirstName)) {
                     addIssue.accept(String.format("author with id: %d has first name either empty or NULL",
                             author.getId()));
-                } else {
-                    if (authorFirstName.length() > 60) {
-                        addIssue.accept(String.format("author with id: %d has first name length more 60 characters",
-                                author.getId()));
-                    }
+                } else if (authorFirstName.length() > 60) {
+                    addIssue.accept(String.format("author with id: %d has first name length more 60 characters",
+                            author.getId()));
                 }
 
                 var authorLastName = author.getLastName();
-                if (authorLastName == null || authorLastName.isEmpty()) {
+                if (!hasLength(authorLastName)) {
                     addIssue.accept(String.format("author with id: %d has author last name either empty or NULL",
                             author.getId()));
-                } else {
-                    if (authorLastName.length() > 60) {
-                        addIssue.accept(String.format("author with id: %d has last name length more 60 characters",
-                                author.getId()));
-                    }
+                } else if (authorLastName.length() > 60) {
+                    addIssue.accept(String.format("author with id: %d has last name length more 60 characters",
+                            author.getId()));
                 }
             }
         }
