@@ -1,17 +1,14 @@
 package com.education.service.impl;
 
-import com.education.dto.FileDto;
+import com.education.model.dto.FileDto;
 import com.education.service.MinioService;
 import io.minio.*;
-import io.minio.messages.Item;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -27,32 +24,6 @@ public class MinioServiceImpl implements MinioService {
         this.minioClient = minioClient;
     }
 
-    public List<FileDto> getListObjects() {
-        List<FileDto> objects = new ArrayList<>();
-        try {
-            Iterable<Result<Item>> result = minioClient.listObjects(ListObjectsArgs.builder()
-                    .bucket(bucketName)
-                    .recursive(true)
-                    .build());
-            for (Result<Item> item : result) {
-                objects.add(FileDto.builder()
-                        .filename(item.get().objectName())
-                        .size(item.get().size())
-                        .url(getPreSignedUrl(item.get().objectName()))
-                        .build());
-            }
-            return objects;
-        } catch (Exception e) {
-            log.error("Happened error when get list objects from minio: ", e);
-        }
-
-        return objects;
-    }
-
-    private String getPreSignedUrl(String filename) {
-        return "/api/file-storage/download/".concat(filename);
-    }
-
     public FileDto uploadFile(FileDto request) {
         UUID uuid = UUID.randomUUID();
         try {
@@ -61,15 +32,16 @@ public class MinioServiceImpl implements MinioService {
                     .object(uuid.toString())
                     .stream(request.getFile().getInputStream(), request.getFile().getSize(), -1)
                     .build());
+
+            return FileDto.builder()
+                    .size(request.getFile().getSize())
+                    .filename(request.getFile().getOriginalFilename())
+                    .uuidName(uuid.toString())
+                    .build();
         } catch (Exception e) {
             log.error("Happened error when upload file: ", e);
+            throw new RuntimeException(e);
         }
-        return FileDto.builder()
-                .size(request.getFile().getSize())
-                .url(getPreSignedUrl(uuid.toString()))
-                .filename(request.getFile().getOriginalFilename())
-                .uuidName(uuid.toString())
-                .build();
     }
 
     public InputStream getObject(String filename) {
@@ -81,7 +53,7 @@ public class MinioServiceImpl implements MinioService {
                     .build());
         } catch (Exception e) {
             log.error("Happened error when get list objects from minio: ", e);
-            return null;
+            throw new RuntimeException(e);
         }
 
         return stream;

@@ -1,4 +1,4 @@
-package com.education.dto;
+package com.education.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -14,15 +14,11 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FileDto{
     @SuppressWarnings("java:S1948")
     @ApiModelProperty("Файл")
     private MultipartFile file;
-
-    @ApiModelProperty("url файла")
-    private String url;
 
     @ApiModelProperty("размер файла")
     private Long size;
