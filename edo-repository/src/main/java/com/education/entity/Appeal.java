@@ -1,6 +1,7 @@
 package com.education.entity;
 
 import com.education.model.enumEntity.EnumAppealStatus;
+import com.education.model.enumEntity.EnumWayToAnswer;
 import com.education.model.enumEntity.EnumWayToReceive;
 import jakarta.persistence.*;
 import lombok.*;
@@ -119,4 +120,11 @@ public class Appeal extends BaseEntity {
     @Column(name = "way_to_receive")
     @Enumerated(EnumType.STRING)
     private EnumWayToReceive sendingMethod;
+
+    /**
+     * Способ получения ответа на обращение
+     */
+    @Column(name = "way_to_answer")
+    @Enumerated(EnumType.STRING)
+    private EnumWayToAnswer answerMethod;
 }

@@ -18,7 +18,7 @@
         <module>edo-file-storage</module>
         <module>edo-websocket</module>
         <module>edo-scheduler</module>
-        <module>edo-security</module>
+        <module>edo-common-config</module>
         <module>edo-common</module>
         <module>edo-integration</module>
         <module>edo-service</module>

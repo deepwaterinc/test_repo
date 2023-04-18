@@ -1,0 +1,35 @@
+security:
+  enabled: false
+spring:
+  application:
+    name: edo-common-config
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: edo-project-client
+            authorization-grant-type: authorization_code
+            scope:
+              - openid
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8181/realms/edo-project-realm
+            user-name-attribute: preferred_username
+      resourceserver:
+        jwt:
+          issuer-uri: ${spring.security.oauth2.client.provider.keycloak.issuer-uri}
+          jwk-set-uri: ${spring.security.oauth2.client.provider.keycloak.issuer-uri}/protocol/openid-connect/certs
+server:
+  port: 0
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+  instance:
+    preferIpAddress: true
+jwt:
+  auth:
+    converter:
+      resource: edo-project-client
+      principal: preferred_username

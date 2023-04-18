@@ -1,6 +1,7 @@
 package com.education.model.dto;
 
 import com.education.model.enumEntity.EnumAppealStatus;
+import com.education.model.enumEntity.EnumWayToAnswer;
 import com.education.model.enumEntity.EnumWayToReceive;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
@@ -62,4 +63,7 @@ public class AppealDto {
 
     @ApiModelProperty("Способ получения обращения")
     private EnumWayToReceive sendingMethod;
+
+    @ApiModelProperty("Способ получения ответа на обращение")
+    private EnumWayToAnswer answeringMethod;
 }

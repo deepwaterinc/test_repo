@@ -1,4 +1,6 @@
 spring:
+#  profiles:
+  #    include: security
   application:
     name: edo-service
 server:

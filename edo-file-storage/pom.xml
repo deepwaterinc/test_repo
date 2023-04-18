@@ -8,7 +8,13 @@
         <artifactId>edo</artifactId>
         <version>0.0.1</version>
     </parent>
-
+    <dependencies>
+        <dependency>
+            <groupId>com.education</groupId>
+            <artifactId>edo-common-config</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+    </dependencies>
     <artifactId>edo-file-storage</artifactId>
 
 </project>
