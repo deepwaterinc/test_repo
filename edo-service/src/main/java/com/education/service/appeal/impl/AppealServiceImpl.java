@@ -5,6 +5,7 @@ import com.education.model.constant.RabbitConstant;
 import com.education.model.dto.AppealAbbreviatedDto;
 import com.education.model.dto.AppealDto;
 import com.education.model.enumEntity.EnumAppealStatus;
+import com.education.model.records.AppealReadRecord;
 import com.education.service.appeal.AppealService;
 import com.education.service.nomenclature.NomenclatureService;
 import com.education.service.question.QuestionService;
@@ -94,10 +95,8 @@ public class AppealServiceImpl implements AppealService {
         AppealDto response = TEMPLATE.getForObject(uri, AppealDto.class);
 
         if (response != null && response.getAppealStatus().equals(EnumAppealStatus.NEW)) {
-            var dateFormatter = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss z");
-            var message = "Appeal with id %1$s was read at %2$s";
             amqpTemplate.convertAndSend(RabbitConstant.exchange, RabbitConstant.addressAppealIsRead,
-                    message.formatted(id.toString(), dateFormatter.format(new Date())));
+                    new AppealReadRecord(id, new Date()));
         }
         return response;
     }

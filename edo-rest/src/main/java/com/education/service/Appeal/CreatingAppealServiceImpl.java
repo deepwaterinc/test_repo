@@ -12,6 +12,7 @@ import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -54,7 +55,6 @@ public class CreatingAppealServiceImpl implements CreatingAppealService {
     }
 
 
-
     @Override
     public List<AppealAbbreviatedDto> findAllByIdEmployee(Long first, Long amount) {
         InstanceInfo instanceInfo = getInstance();
@@ -69,7 +69,8 @@ public class CreatingAppealServiceImpl implements CreatingAppealService {
 
     @Override
     public AppealDto findById(Long id) {
-        var response = TEMPLATE.getForObject(getURIByInstance(getInstance(), String.format("/byId/%s", id.toString())), AppealDto.class);
+        var response = TEMPLATE.getForObject(getURIByInstance(getInstance(),
+                String.format("/byId/%s", id.toString())), AppealDto.class);
         return response;
     }
 }

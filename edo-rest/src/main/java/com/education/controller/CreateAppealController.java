@@ -50,6 +50,12 @@ public class CreateAppealController {
         return new ResponseEntity<>(appeal, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Получение сущности Appeal по id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Сущность найдена"),
+            @ApiResponse(code = 404, message = "Сущность не найдена")
+    })
+    @GetMapping(value = "/appealById/{id}")
     public ResponseEntity<AppealDto> findById(@ApiParam("id") @PathVariable Long id) {
         AppealDto appeal = service.findById(id);
         if (appeal == null) {
