@@ -24,6 +24,10 @@ public class RabbitMQConfig {
     }
 
     @Bean
+    public Queue appealReadService(){
+        return new Queue(RabbitConstant.addressAppealIsRead, false);
+    }
+    @Bean
     public DirectExchange exchange(){
          return new DirectExchange(RabbitConstant.exchange);
     }
@@ -33,7 +37,7 @@ public class RabbitMQConfig {
         return BindingBuilder
                 .bind(addressCreateDB)
                 .to(exchange)
-                .with(RabbitConstant.addressCreateDBQueue);
+                .with(addressCreateDB.getName());
     }
 
 

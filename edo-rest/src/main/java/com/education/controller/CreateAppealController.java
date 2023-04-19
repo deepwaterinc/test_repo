@@ -4,6 +4,7 @@ import com.education.model.dto.AppealAbbreviatedDto;
 import com.education.model.dto.AppealDto;
 import com.education.service.Appeal.CreatingAppealService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,16 @@ public class CreateAppealController {
                                                                        @RequestParam("amount") Long amount) {
         List<AppealAbbreviatedDto> appeal = service.findAllByIdEmployee(first, amount);
         if (appeal == null && appeal.isEmpty()) {
+            log.log(Level.WARN, "Сущности не найдены");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        log.log(Level.INFO, "Сущности найдены");
+        return new ResponseEntity<>(appeal, HttpStatus.OK);
+    }
+
+    public ResponseEntity<AppealDto> findById(@ApiParam("id") @PathVariable Long id) {
+        AppealDto appeal = service.findById(id);
+        if (appeal == null) {
             log.log(Level.WARN, "Сущности не найдены");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
