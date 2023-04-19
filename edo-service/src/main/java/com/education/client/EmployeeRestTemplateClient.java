@@ -32,7 +32,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class EmployeeRestTemplateClient {
 
-    @Value("#${security.enabled:false}")
+    @Value("${security.enabled:false}")
     private Boolean isSecurityEnabled;
 
     /**

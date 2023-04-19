@@ -93,6 +93,12 @@ public class Employee extends BaseEntity {
     private String workPhone;
 
     /**
+     * Рабочая почта
+     */
+    @Column(name = "work_email", length = 20)
+    private String workEmail;
+
+    /**
      * Дата рождения
      */
     @Column(name = "birth_date")
