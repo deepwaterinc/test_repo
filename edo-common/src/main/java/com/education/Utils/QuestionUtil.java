@@ -10,7 +10,7 @@ import lombok.*;
  * @since 1.0
  */
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class QuestionUtil {
 
     /**
