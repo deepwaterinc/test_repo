@@ -21,7 +21,7 @@ public class QuestionUtilTest {
     @CsvSource({"Gtxtymrf, Печенька", "Ljujdjh №325, Договор №325", "Договор №11, Договор №11"})
     public void textShouldBeTransformed(String input, String expectedOutput) {
 
-        String actualOutput = QuestionUtil.getInstance().textTransformer(input);
+        String actualOutput = QuestionUtil.textTransformer(input);
         assertEquals(expectedOutput, actualOutput);
     }
 

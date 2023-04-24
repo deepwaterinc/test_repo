@@ -1,5 +1,7 @@
 package com.education.Utils;
 
+import lombok.*;
+
 /**
  * Утилитный класс для поиска.
  *
@@ -7,27 +9,17 @@ package com.education.Utils;
  * @version 1.0
  * @since 1.0
  */
+
+@NoArgsConstructor
 public class QuestionUtil {
-
-    private static QuestionUtil instance;
-
-    private QuestionUtil() {
-    }
-
-    public static QuestionUtil getInstance() {
-        if (instance == null) {
-            instance = new QuestionUtil();
-        }
-        return instance;
-    }
 
     /**
      * Утилитный метод
      * Реализует трансформацию текста на русский язык при неправильной раскладке
      */
-    public String textTransformer(String someText) {
-        String eng = "qwertyuiop[]\\asdfghjkl;'zxcvbnm,./";
-        String rus = "йцукенгшщзхъ\\фывапролджэячсмитьбю.";
+    public static String textTransformer(String someText) {
+        String eng = "qwertyuiop[]asdfghjkl;'zxcvbnm,.";
+        String rus = "йцукенгшщзхъфывапролджэячсмитьбю";
         StringBuilder result = new StringBuilder();
         for (char c : someText.toCharArray()) {
             int index = eng.indexOf(Character.toLowerCase(c));
