@@ -31,6 +31,7 @@ class SecurityConfig {
         http.oauth2ResourceServer()
                 .jwt()
                 .jwtAuthenticationConverter(jwtAuthConverter);
+        http.csrf().disable();
         return http.build();
     }
 
@@ -38,8 +39,9 @@ class SecurityConfig {
     @ConditionalOnProperty(prefix = "security", name = "enabled", havingValue = "false")
     public SecurityFilterChain filterChainPermitAll(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests()
-                .anyRequest()
-                .permitAll();
+                .anyRequest().permitAll()
+                .and()
+                .csrf().disable();
         return http.build();
     }
 }

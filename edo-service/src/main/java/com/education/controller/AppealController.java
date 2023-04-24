@@ -2,6 +2,7 @@ package com.education.controller;
 
 import com.education.model.dto.AppealAbbreviatedDto;
 import com.education.model.dto.AppealDto;
+import com.education.model.util.exceptions.AppealNotValidException;
 import com.education.model.enumEntity.EnumAppealStatus;
 import com.education.service.appeal.AppealService;
 import com.education.service.email.EmailService;
@@ -140,6 +141,12 @@ public class AppealController {
         }
         log.log(Level.INFO, "Сущности найдены");
         return new ResponseEntity<>(appeal, HttpStatus.OK);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> validationHandler(AppealNotValidException e) {
+
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
 }

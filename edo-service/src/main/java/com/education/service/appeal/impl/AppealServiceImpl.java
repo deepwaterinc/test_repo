@@ -3,13 +3,13 @@ package com.education.service.appeal.impl;
 import com.education.author_feign.service.AuthorService;
 import com.education.model.dto.AppealAbbreviatedDto;
 import com.education.model.dto.AppealDto;
+import com.education.model.util.exceptions.AppealNotValidException;
 import com.education.service.appeal.AppealService;
 import com.education.service.nomenclature.NomenclatureService;
 import com.education.service.question.QuestionService;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import lombok.RequiredArgsConstructor;
-
 import org.apache.http.HttpHost;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,8 +18,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
-import static org.apache.commons.lang.StringUtils.EMPTY;
+import static org.apache.logging.log4j.util.Strings.EMPTY;
+import static org.springframework.util.CollectionUtils.isEmpty;
+import static org.springframework.util.StringUtils.hasLength;
 
 @Service
 @RequiredArgsConstructor
@@ -58,6 +61,10 @@ public class AppealServiceImpl implements AppealService {
     @Override
     public AppealDto save(AppealDto appealDto) {
         InstanceInfo instanceInfo = getInstance();
+        String validateResult = validateAppealDto(appealDto);
+        if (!validateResult.isEmpty()) {
+            throw new AppealNotValidException(validateResult);
+        }
         var savedAuthors = appealDto.getAuthors()
                 .stream().map(authorService::save)
                 .map(ResponseEntity::getBody).toList();
@@ -126,4 +133,113 @@ public class AppealServiceImpl implements AppealService {
         AppealAbbreviatedDto[] response = TEMPLATE.getForObject(uri, AppealAbbreviatedDto[].class);
         return Arrays.asList(response);
     }
+
+    private String validateAppealDto(AppealDto appealDto) {
+
+        final String emailRegEx = "\\w+@\\w+\\.\\w+";
+        final String phoneRegEx = "7\\d{10}";
+
+        StringBuilder stringBuilder = new StringBuilder();
+        Consumer<String> addIssue = (s) -> stringBuilder.append(s).append(";");
+
+        var questions = appealDto.getQuestion();
+        if (isEmpty(questions)) {
+            addIssue.accept("field question is empty");
+        } else {
+
+            for (var question : questions) {
+
+                if (!hasLength(question.getSummary())) {
+
+                    addIssue.accept(String.format("question id: %d  field summary is empty or NULL",
+                            question.getId()));
+                } else if (question.getSummary().length() > 200) {
+
+                    addIssue.accept(String.format("question id: %d field Summary has more then 200 characters",
+                            question.getId()));
+                }
+
+                if (question.getTheme() == null) {
+                    addIssue.accept(String.format("question id: %d theme is empty", question.getId()));
+                }
+            }
+        }
+
+        var authors = appealDto.getAuthors();
+        if (isEmpty(authors)) {
+            addIssue.accept("this appeal has no authors");
+        } else {
+
+            for (var author : authors) {
+                var authorEmail = author.getEmail();
+                if (authorEmail == null) {
+                    addIssue.accept(String.format("author with id: %d field email is NULL", author.getId()));
+                } else if (!authorEmail.matches(emailRegEx)) {
+
+                    addIssue.accept(String.format("author with id: %d has email, but incorrect format", author.getId()));
+                }
+
+                var authorMobilePhone = author.getMobilePhone();
+                if (!hasLength(authorMobilePhone)) {
+                    addIssue.accept(String.format("author with id: %d has email is NULL", author.getId()));
+                } else if (!authorMobilePhone.matches(phoneRegEx)) {
+
+                    addIssue.accept(String.format("author with id: %d has mobilePhone, but incorrect format",
+                            author.getId()));
+                }
+
+                var authorFirstName = author.getFirstName();
+                if (!hasLength(authorFirstName)) {
+                    addIssue.accept(String.format("author with id: %d has first name either empty or NULL",
+                            author.getId()));
+                } else if (authorFirstName.length() > 60) {
+                    addIssue.accept(String.format("author with id: %d has first name length more 60 characters",
+                            author.getId()));
+                }
+
+                var authorLastName = author.getLastName();
+                if (!hasLength(authorLastName)) {
+                    addIssue.accept(String.format("author with id: %d has author last name either empty or NULL",
+                            author.getId()));
+                } else if (authorLastName.length() > 60) {
+                    addIssue.accept(String.format("author with id: %d has last name length more 60 characters",
+                            author.getId()));
+                }
+            }
+        }
+
+        if (appealDto.getSendingMethod() == null) {
+            addIssue.accept("appeal has no sending method");
+        }
+
+        if (!stringBuilder.isEmpty()) {
+            stringBuilder.insert(0, "Appeal not valid;");
+        }
+
+        return stringBuilder.toString();
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
