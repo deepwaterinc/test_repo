@@ -9,7 +9,7 @@ spring:
         default_schema: edo
   flyway:
     enabled: true
-    user: root
+    user: postgres #Should be changed (local database username)
     password: root
     url: jdbc:postgresql://localhost:5432/edo_db?currentSchema=${spring.flyway.default-schema}
     default-schema: edo
