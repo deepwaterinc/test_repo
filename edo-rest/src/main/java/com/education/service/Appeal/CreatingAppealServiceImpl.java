@@ -8,9 +8,11 @@ import com.netflix.discovery.EurekaClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.http.HttpHost;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,7 +24,6 @@ import static org.apache.commons.lang.StringUtils.EMPTY;
 public class CreatingAppealServiceImpl implements CreatingAppealService {
 
     private final RestTemplate TEMPLATE;
-
     private final EurekaClient EUREKA_CLIENT;
     private final EnumAppealStatus STATUS_FOR_NEW_APPEAL = EnumAppealStatus.NEW;
 
@@ -54,7 +55,6 @@ public class CreatingAppealServiceImpl implements CreatingAppealService {
     }
 
 
-
     @Override
     public List<AppealAbbreviatedDto> findAllByIdEmployee(Long first, Long amount) {
         InstanceInfo instanceInfo = getInstance();
@@ -65,5 +65,12 @@ public class CreatingAppealServiceImpl implements CreatingAppealService {
         var uri = getURIByInstance(instanceInfo, path);
         AppealAbbreviatedDto[] response = TEMPLATE.getForObject(uri, AppealAbbreviatedDto[].class);
         return Arrays.asList(response);
+    }
+
+    @Override
+    public AppealDto findById(Long id) {
+        var response = TEMPLATE.getForObject(getURIByInstance(getInstance(),
+                String.format("/byId/%s", id.toString())), AppealDto.class);
+        return response;
     }
 }

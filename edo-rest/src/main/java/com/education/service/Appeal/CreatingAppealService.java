@@ -10,4 +10,6 @@ public interface CreatingAppealService {
     AppealDto createAppeal(AppealDto appealDto);
 
     List<AppealAbbreviatedDto> findAllByIdEmployee(Long first, Long amount);
+
+    AppealDto findById(Long id);
 }

@@ -1,8 +1,11 @@
 package com.education.service.appeal.impl;
 
 import com.education.author_feign.service.AuthorService;
+import com.education.model.constant.RabbitConstant;
 import com.education.model.dto.AppealAbbreviatedDto;
 import com.education.model.dto.AppealDto;
+import com.education.model.enumEntity.EnumAppealStatus;
+import com.education.model.records.AppealReadRecord;
 import com.education.model.util.exceptions.AppealNotValidException;
 import com.education.service.appeal.AppealService;
 import com.education.service.nomenclature.NomenclatureService;
@@ -11,11 +14,13 @@ import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpHost;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
@@ -33,6 +38,8 @@ public class AppealServiceImpl implements AppealService {
     private final AuthorService authorService;
 
     private final RestTemplate TEMPLATE;
+
+    private final AmqpTemplate amqpTemplate;
 
     private final EurekaClient EUREKA_CLIENT;
 
@@ -93,6 +100,11 @@ public class AppealServiceImpl implements AppealService {
         InstanceInfo instanceInfo = getInstance();
         var uri = getURIByInstance(instanceInfo, String.format("/byId/%s", id.toString()));
         AppealDto response = TEMPLATE.getForObject(uri, AppealDto.class);
+
+        if (response != null && response.getAppealStatus().equals(EnumAppealStatus.NEW)) {
+            amqpTemplate.convertAndSend(RabbitConstant.exchange, RabbitConstant.addressAppealIsRead,
+                    new AppealReadRecord(id, new Date()));
+        }
         return response;
     }
 
