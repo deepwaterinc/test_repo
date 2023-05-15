@@ -1,4 +1,6 @@
 package com.education.model.dto;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -28,8 +30,12 @@ public class FilePoolDto {
     private Integer size;
     @ApiModelProperty("Количество страниц файла")
     private Integer pageCount;
+
+    @JsonSerialize(using = ZonedDateTimeSerializer.class)
     @ApiModelProperty("Дата загрузки файла")
     private ZonedDateTime uploadDate;
+
+    @JsonSerialize(using = ZonedDateTimeSerializer.class)
     @ApiModelProperty("Дата архивирования файла")
     private ZonedDateTime archivedDate;
     @ApiModelProperty("Автор файла")

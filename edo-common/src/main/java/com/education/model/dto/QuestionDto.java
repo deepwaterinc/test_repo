@@ -1,6 +1,8 @@
 package com.education.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -19,9 +21,11 @@ public class QuestionDto {
     @ApiModelProperty("Id обращения")
     private Long id;
 
+    @JsonSerialize(using = ZonedDateTimeSerializer.class)
     @ApiModelProperty("Дата создания обращения")
     private ZonedDateTime creationDate;
 
+    @JsonSerialize(using = ZonedDateTimeSerializer.class)
     @ApiModelProperty("Дата архивирования обращения")
     private ZonedDateTime archivedDate;
 
