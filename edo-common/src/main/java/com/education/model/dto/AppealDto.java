@@ -34,12 +34,10 @@ public class AppealDto {
     private Long id;
 
     @JsonSerialize(using = ZonedDateTimeSerializer.class)
-//    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @ApiModelProperty("Дата создания обращения")
     private ZonedDateTime creationDate;
 
     @JsonSerialize(using = ZonedDateTimeSerializer.class)
-//    @JsonDeserialize(using = DeserializationFeature.class)
     @ApiModelProperty("Дата архивирования обращения")
     private ZonedDateTime archivedDate;
 
@@ -79,6 +77,6 @@ public class AppealDto {
     @ApiModelProperty("Способ получения ответа на обращение")
     private EnumWayToAnswer answeringMethod;
 
-//    @ApiModelProperty("Регион")
-//    private RegionDto region;
+    @ApiModelProperty("Регион")
+    private RegionDto region;
 }
