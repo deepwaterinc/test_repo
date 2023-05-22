@@ -1,0 +1,30 @@
+version: '3'
+
+# 1) Перед запуском Docker-compose файла выполняем команду mvn clean package(минуя тесты, иначе не упакуется)
+#             Чтобы миновать тесты:
+#  в идее справа вкладка maven, в открывшемся окне нажать на кнопку "Toggle 'skip tests' Mode"(перечеркнутый кружок)
+# далее edo/lifecycle/clean и edo/lifecycle/package  - это нужно, чтобы появился jar файл в папке target
+
+# 2) Если БД запущена локально, то идем в пункт 2.1, если нет то
+# нажать кнопку двойной "play" слева от "services" - запустится БД и ПРИЛОЖЕНИЕ в контейнере одновременно
+services:
+  db:
+    container_name: repository-db
+    ports:
+      - "5432"
+    image: postgres:alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=edo_db
+# 2.1) Нажать кнопку "play", если хотим запустить в контейнере только приложение
+  app:
+    build: .
+    environment:
+      SPRING_FLYWAY_HOST: host.docker.internal
+      SPRING_RABBITMQ_HOST: host.docker.internal
+
+
+
+
+

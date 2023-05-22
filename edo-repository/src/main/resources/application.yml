@@ -11,7 +11,8 @@ spring:
     enabled: true
     user: postgres #Should be changed (local database username)
     password: root
-    url: jdbc:postgresql://localhost:5432/edo_db?currentSchema=${spring.flyway.default-schema}
+    host: localhost
+    url: jdbc:postgresql://${spring.flyway.host}:5432/edo_db?currentSchema=${spring.flyway.default-schema}
     default-schema: edo
     locations: db/migration
     out-of-order: true
@@ -22,7 +23,8 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+      defaultZone: ${EUREKA_URI:http://${spring.flyway.host}:8761/eureka}
+
   instance:
     preferIpAddress: true
     instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${spring.application.instance_id:${random.value}}
