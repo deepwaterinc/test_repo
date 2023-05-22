@@ -1,0 +1,12 @@
+
+
+#       Тут ничего не нажимаем, переходим в файл docker-compose
+
+
+FROM openjdk:17-alpine
+
+WORKDIR /app
+
+COPY target/edo-service-0.0.1.jar /app/
+
+CMD ["java", "-jar", "edo-service-0.0.1.jar"]

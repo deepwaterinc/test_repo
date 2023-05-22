@@ -1,6 +1,8 @@
 spring:
 #  profiles:
   #    include: security
+  flyway:
+    host: localhost
   application:
     name: edo-service
 server:
@@ -8,7 +10,7 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+      defaultZone: ${EUREKA_URI:http://${spring.flyway.host}:8761/eureka}
   instance:
     preferIpAddress: true
     instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${spring.application.instance_id:${random.value}}
