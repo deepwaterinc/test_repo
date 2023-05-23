@@ -1,7 +1,6 @@
 package com.education.model.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -20,7 +19,6 @@ public class AppealAbbreviatedDto {
 
     @ApiModelProperty("Номер обращения")
     private String number;
-    @JsonSerialize(using = ZonedDateTimeSerializer.class)
     @ApiModelProperty("Дата создания обращения")
     private ZonedDateTime creationDate;
     @ApiModelProperty("Описание обращения")

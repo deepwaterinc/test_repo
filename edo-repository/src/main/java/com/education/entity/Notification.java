@@ -21,6 +21,13 @@ import lombok.experimental.SuperBuilder;
 public class Notification extends BaseEntity {
 
     /**
+     * Id работника, для которого уведомление
+     */
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private Employee employee;
+
+    /**
      * Тип оповещения
      */
     @Column(name = "notification_name")

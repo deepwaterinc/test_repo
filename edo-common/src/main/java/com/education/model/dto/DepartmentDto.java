@@ -1,8 +1,6 @@
 package com.education.model.dto;
 
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -60,14 +58,12 @@ public class DepartmentDto {
     )
     private DepartmentDto department;
 
-    @JsonSerialize(using = ZonedDateTimeSerializer.class)
     @ApiModelProperty(
             notes = "Дата открытия",
             dataType = "ZonedDateTime"
     )
     private ZonedDateTime creationDate;
 
-    @JsonSerialize(using = ZonedDateTimeSerializer.class)
     @ApiModelProperty(
             notes = "Дата закрытия",
             dataType = "ZonedDateTime"

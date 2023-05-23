@@ -127,15 +127,4 @@ public class Appeal extends BaseEntity {
     @Column(name = "way_to_answer")
     @Enumerated(EnumType.STRING)
     private EnumWayToAnswer answerMethod;
-
-    /**
-     * Связь с Appeal со стороны Appeal, обращение может быть создано для определенного региона
-     */
-//    @OneToOne
-//    @JoinTable(name = "appeal_region",
-//            joinColumns = @JoinColumn(name = "appeal_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "region_id", referencedColumnName = "id"))
-//    @Column(name = "region")
-//    @Enumerated(EnumType.STRING)
-//    private Region region;
 }
