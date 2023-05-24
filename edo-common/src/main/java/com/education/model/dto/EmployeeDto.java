@@ -1,6 +1,6 @@
 package com.education.model.dto;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
+
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -63,18 +63,15 @@ public class EmployeeDto {
     @ApiModelProperty("Рабочая почта")
     private String workEmail;
 
-    @JsonSerialize(using = ZonedDateTimeSerializer.class)
     @ApiModelProperty("Дата рождения")
     private ZonedDateTime birthDate;
 
     @ApiModelProperty("Имя пользователя")
     private String username;
 
-    @JsonSerialize(using = ZonedDateTimeSerializer.class)
     @ApiModelProperty("Дата создания")
     private ZonedDateTime creationDate;
 
-    @JsonSerialize(using = ZonedDateTimeSerializer.class)
     @ApiModelProperty("Дата архивирования")
     private ZonedDateTime archivedDate;
 

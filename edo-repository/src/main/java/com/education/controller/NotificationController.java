@@ -52,14 +52,6 @@ public class NotificationController {
         return HttpStatus.CREATED;
     }
 
-//    @ApiOperation("Сохранить сущности notification")
-//    @ApiResponse(code = 201, message = "Notifications was saved")
-//    @PostMapping
-//    public HttpStatus saveAllNotifications(@RequestBody List<Notification> notification) {
-//        log.log(Level.INFO, "Получен запрос на сохранение сущностей - {0}", notification);
-//        service.saveAll(notification);
-//        return HttpStatus.CREATED;
-//    }
     @ApiOperation("Удалить сущность notification")
     @ApiResponse(code = 200, message = "Notification was deleted")
     @DeleteMapping("/{id}")

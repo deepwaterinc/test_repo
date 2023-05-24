@@ -20,15 +20,12 @@ public class ResolutionDto {
     @ApiModelProperty("Id резолюции")
     private Long id;
 
-    @JsonSerialize(using = ZonedDateTimeSerializer.class)
     @ApiModelProperty("Дата создания резолюции")
     private ZonedDateTime creationDate;
 
-    @JsonSerialize(using = ZonedDateTimeSerializer.class)
     @ApiModelProperty("Дата создания резолюции")
     private ZonedDateTime archivedDate;
 
-    @JsonSerialize(using = ZonedDateTimeSerializer.class)
     @ApiModelProperty("Дата последнего события")
     private ZonedDateTime lastActionDate;
 
