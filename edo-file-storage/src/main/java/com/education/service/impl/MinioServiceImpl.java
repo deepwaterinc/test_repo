@@ -1,13 +1,15 @@
 package com.education.service.impl;
 
-import com.education.model.dto.FileDto;
 import com.education.service.MinioService;
-import io.minio.*;
+import io.minio.GetObjectArgs;
+import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.UUID;
 
@@ -24,20 +26,16 @@ public class MinioServiceImpl implements MinioService {
         this.minioClient = minioClient;
     }
 
-    public FileDto uploadFile(FileDto request) {
+    public UUID uploadFile(byte[] request) {
         UUID uuid = UUID.randomUUID();
         try {
             minioClient.putObject(PutObjectArgs.builder()
                     .bucket(bucketName)
                     .object(uuid.toString())
-                    .stream(request.getFile().getInputStream(), request.getFile().getSize(), -1)
+                    .stream(new ByteArrayInputStream(request), request.length, -1)
                     .build());
 
-            return FileDto.builder()
-                    .size(request.getFile().getSize())
-                    .filename(request.getFile().getOriginalFilename())
-                    .uuidName(uuid.toString())
-                    .build();
+            return uuid;
         } catch (Exception e) {
             log.error("Happened error when upload file: ", e);
             throw new RuntimeException(e);
