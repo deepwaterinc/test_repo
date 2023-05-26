@@ -3,16 +3,15 @@ package com.education.model.dto;
 import com.education.model.enumEntity.EnumAppealStatus;
 import com.education.model.enumEntity.EnumWayToAnswer;
 import com.education.model.enumEntity.EnumWayToReceive;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import jdk.jfr.DataAmount;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.ZonedDateTime;
 import java.util.List;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @Data
 @ApiModel("Класс AppealDTO, dto для класса appeal.class")
@@ -66,4 +65,5 @@ public class AppealDto {
 
     @ApiModelProperty("Способ получения ответа на обращение")
     private EnumWayToAnswer answeringMethod;
+
 }

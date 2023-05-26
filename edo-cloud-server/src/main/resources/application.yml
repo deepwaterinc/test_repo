@@ -13,3 +13,4 @@ eureka:
     fetchRegistry: false
   dashboard:
     enabled: true
+

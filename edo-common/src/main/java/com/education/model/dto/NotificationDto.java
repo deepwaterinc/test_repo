@@ -17,6 +17,9 @@ public class NotificationDto {
     @ApiModelProperty("Id оповещения")
     private Long id;
 
+    @ApiModelProperty("Id работника, для которого уведомление")
+    private EmployeeDto employee;
+
     @ApiModelProperty("Тип оповещения")
     private EnumNotification enumNotification;
 }

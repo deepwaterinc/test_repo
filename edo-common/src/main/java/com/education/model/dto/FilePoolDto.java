@@ -1,4 +1,5 @@
 package com.education.model.dto;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -28,8 +29,10 @@ public class FilePoolDto {
     private Integer size;
     @ApiModelProperty("Количество страниц файла")
     private Integer pageCount;
+
     @ApiModelProperty("Дата загрузки файла")
     private ZonedDateTime uploadDate;
+
     @ApiModelProperty("Дата архивирования файла")
     private ZonedDateTime archivedDate;
     @ApiModelProperty("Автор файла")

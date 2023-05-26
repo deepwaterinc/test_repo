@@ -54,7 +54,7 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public void save(NotificationDto notificationDto) {
-        String lastPathComponent = "/";
+        String lastPathComponent = "";
         URI uri = generateUri(this.getInstance(), lastPathComponent);
         template.postForObject(uri, notificationDto, NotificationDto.class);
     }
