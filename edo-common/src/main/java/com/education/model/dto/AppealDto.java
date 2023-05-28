@@ -68,6 +68,6 @@ public class AppealDto {
     @ApiModelProperty("Способ получения ответа на обращение")
     private EnumWayToAnswer answeringMethod;
 
-    @ApiModelProperty("Регион")
+    @ApiModelProperty("ID региона, связанного с обращением")
     private RegionDto region;
 }

@@ -38,9 +38,8 @@ public class AppealServiceImpl implements AppealService {
     private final QuestionService questionService;
 
     private final AuthorService authorService;
-//------------------
+
     private final RegionService regionService;
-    //----------------------
     private final RestTemplate TEMPLATE;
 
     private final AmqpTemplate amqpTemplate;
@@ -81,12 +80,9 @@ public class AppealServiceImpl implements AppealService {
                 .map(ResponseEntity::getBody).toList();
         var savedQuestions = appealDto.getQuestion()
                 .stream().map(questionService::save).toList();
-//--------------------
         var savedRegions = appealDto.getRegion();
         regionService.save(savedRegions);
         appealDto.setRegion(savedRegions);
-        //        -----------------
-
 
         appealDto.setAuthors(savedAuthors);
         appealDto.setQuestion(savedQuestions);

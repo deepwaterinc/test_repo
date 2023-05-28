@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @SuperBuilder
 @NoArgsConstructor
@@ -16,6 +17,14 @@ import java.time.ZonedDateTime;
 @Entity
 @Table(name = "region")
 public class Region extends BaseEntity {
+
+    /**
+     * Связь обращения и региона
+     */
+    @OneToMany(fetch = FetchType.LAZY)
+//            (cascade = CascadeType.PERSIST)
+    private List<Appeal> appeal;
+
     /**
      * Идентификатор региона из внешних систем
      */
@@ -36,14 +45,14 @@ public class Region extends BaseEntity {
      */
     @Column(name = "quantity")
     private String quantity;
+
     /**
-     * Федеральный округ(связанная сущность): { Название Сайт федерального округа }
+     * Федеральный округ(связанная сущность)
      */
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "region_federal_district",
-            joinColumns = @JoinColumn(name = "region_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "federal_district_id", referencedColumnName = "id"))
+    @JoinColumn(name = "federal_district_id")
     private FederalDistrict federalDistrict;
+
     /**
      * Количество первичных отделений в регионе
      */

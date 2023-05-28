@@ -7,6 +7,7 @@ import com.education.service.region.RegionService;
 import com.education.util.Mapper.impl.RegionMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +29,7 @@ public class RegionServiceImpl implements RegionService {
      *
      * @param region
      */
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public RegionDto save(RegionDto region) {
         repository.save(mapper.toEntity(region));
@@ -39,6 +41,7 @@ public class RegionServiceImpl implements RegionService {
      *
      * @param id
      */
+    @Transactional(readOnly = true, rollbackFor = Exception.class)
     @Override
     public Optional<Region> findById(long id) {
         return repository.findById(id);
@@ -47,6 +50,7 @@ public class RegionServiceImpl implements RegionService {
     /**
      * Метод для вывода доступных объектов Region в БД.
      */
+    @Transactional(readOnly = true, rollbackFor = Exception.class)
     @Override
     public List<Region> findAll() {
         return repository.findAll();
@@ -57,6 +61,7 @@ public class RegionServiceImpl implements RegionService {
      *
      * @param id
      */
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void delete(long id) {
         repository.deleteById(id);

@@ -1,4 +1,3 @@
-
 -- 1) Заходим в PostgreSQL UI и удаляем схему edo, если она есть
 -- 2) Запускаем приложение:
 -- Для запуска у вас должен быть запущен rabbitmq и postgreSQL.
@@ -11,8 +10,6 @@
 -- Проверить работоспособность:
 -- GET запрос на http://127.0.0.1:8080/api/rest/appeal/appealById/1
 -- POST запрос на http://127.0.0.1:8080/api/rest/appeal    json можно найти в файле json_for_appeal_save_with_region
-
-
 
 
 -- Создаем таблицу federal_district
@@ -34,7 +31,8 @@ create table if not exists region
     archived_date              timestamptz,
     quantity                   varchar(255),
     number_of_primary_branches varchar(15),
-    number_of_local_branches   varchar(15)
+    number_of_local_branches   varchar(15),
+    federal_district_id bigint references federal_district (id)
 );
 
 comment on column region.external_id is 'Идентификатор региона из внешних систем';
@@ -43,28 +41,21 @@ comment on column region.archived_date is 'Дата архивации';
 comment on column region.quantity is 'Количество';
 comment on column region.number_of_primary_branches is 'Количество первичных отделений в регионе';
 comment on column region.number_of_local_branches is 'Количество местных отделений в регионе';
+comment on column region.federal_district_id is 'ID федерального округа региона';
 
--- Создаем таблицу appeal_region
-create table if not exists appeal_region
-(
-    appeal_id bigint references appeal (id),
-    region_id bigint references region (id)
-);
 
--- Создаем таблицу region_federal_district
-create table if not exists region_federal_district
-(
-    region_id           bigint references region (id),
-    federal_district_id bigint references federal_district (id)
-);
+
+-- Добавляем в таблицу Appeal поле region_id
+
+ALTER TABLE IF EXISTS appeal
+    ADD COLUMN IF NOT EXISTS region_id bigint references region (id);
 
 
 
 -- Заполнение тестовыми данными
 
-insert into federal_district (federal_district_name, website) VALUES ('Северо-Западный', 'example.org');
+insert into federal_district (federal_district_name, website)
+VALUES ('Северо-Западный', 'example.org');
 
-insert into region (external_id, region_name, archived_date, quantity, number_of_primary_branches, number_of_local_branches) values
-    ('123','Ленинградская область', null, '5', '2','3');
-
-insert into region_federal_district (region_id, federal_district_id) VALUES (1,1);
+insert into region (external_id, region_name, quantity, number_of_primary_branches, number_of_local_branches, federal_district_id)
+values ('123', 'Ленинградская область', '5', '2', '3', 1);
