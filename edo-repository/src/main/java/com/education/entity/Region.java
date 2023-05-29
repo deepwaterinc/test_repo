@@ -6,7 +6,6 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 
 @SuperBuilder
 @NoArgsConstructor
@@ -17,12 +16,6 @@ import java.util.List;
 @Entity
 @Table(name = "region")
 public class Region extends BaseEntity {
-
-    /**
-     * Связь обращения и региона
-     */
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Appeal> appeal;
 
     /**
      * Идентификатор региона из внешних систем

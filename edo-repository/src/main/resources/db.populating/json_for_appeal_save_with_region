@@ -58,6 +58,7 @@
     "archivedDate": null,
     "quantity": "33",
     "federalDistrict": {
+        "id":1,
         "federalDistrictName": "LO",
         "website": "www"
     },
