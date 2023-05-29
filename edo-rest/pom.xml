@@ -13,6 +13,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>com.education</groupId>
             <artifactId>edo-common</artifactId>
             <version>0.0.1</version>
@@ -22,6 +27,11 @@
             <groupId>com.education</groupId>
             <artifactId>edo-common-config</artifactId>
             <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
