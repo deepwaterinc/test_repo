@@ -23,7 +23,6 @@ public class Notification extends BaseEntity {
     /**
      * Id работника, для которого уведомление
      */
-
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Employee employee;
 

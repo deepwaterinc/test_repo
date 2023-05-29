@@ -91,7 +91,7 @@ public class EmployeeController {
     @ApiResponse(code = 201, message = "Employee was saved")
     @PostMapping
     public ResponseEntity<EmployeeDto> saveEmployee(@RequestBody EmployeeDto employeeDto) {
-        log.log(Level.INFO, "Получен запрос на сохранение сущности");
+        log.log(Level.INFO, "Получен запрос на сохранение сущности Employee");
         Employee employee = mapper.toEntity(employeeDto);
         List<Notification> notifications = notificationMapper.toEntity(employeeDto.getNotification());
         notificationService.saveAll(notifications);

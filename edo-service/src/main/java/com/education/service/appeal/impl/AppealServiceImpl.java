@@ -11,7 +11,6 @@ import com.education.service.appeal.AppealService;
 import com.education.service.nomenclature.NomenclatureService;
 import com.education.service.question.QuestionService;
 import com.education.service.region.RegionService;
-import com.education.service.region.impl.RegionServiceImpl;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +39,7 @@ public class AppealServiceImpl implements AppealService {
     private final AuthorService authorService;
 
     private final RegionService regionService;
+
     private final RestTemplate TEMPLATE;
 
     private final AmqpTemplate amqpTemplate;
@@ -81,6 +81,10 @@ public class AppealServiceImpl implements AppealService {
         var savedQuestions = appealDto.getQuestion()
                 .stream().map(questionService::save).toList();
         var savedRegions = appealDto.getRegion();
+
+
+
+
         regionService.save(savedRegions);
         appealDto.setRegion(savedRegions);
 

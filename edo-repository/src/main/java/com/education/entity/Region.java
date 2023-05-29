@@ -22,7 +22,6 @@ public class Region extends BaseEntity {
      * Связь обращения и региона
      */
     @OneToMany(fetch = FetchType.LAZY)
-//            (cascade = CascadeType.PERSIST)
     private List<Appeal> appeal;
 
     /**

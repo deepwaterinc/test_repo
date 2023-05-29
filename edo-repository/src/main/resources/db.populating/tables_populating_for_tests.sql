@@ -80,3 +80,5 @@ VALUES ('социальные льготы для ветеранов', '3.4');
 UPDATE theme
 SET parent_id = (SELECT theme.id FROM theme where code = '3')
 where code in ('3.4');
+
+
