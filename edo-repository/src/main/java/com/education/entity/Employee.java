@@ -125,9 +125,7 @@ public class Employee extends BaseEntity {
     /**
      * Типы оповещения, которые выбрали пользователи
      */
-    @OneToMany
-    @JoinTable(name = "employees_notifications",
-            joinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "notification_id", referencedColumnName = "id"))
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "employee_id")
     private List<Notification> notification;
 }
