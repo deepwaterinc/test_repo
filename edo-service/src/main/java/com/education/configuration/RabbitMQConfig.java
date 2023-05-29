@@ -20,26 +20,27 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
     @Bean
-    public Queue addressCreateDB(){
+    public Queue addressCreateDB() {
         return new Queue(RabbitConstant.addressCreateDBQueue, false);
     }
 
     @Bean
-    public Queue addressCreateService(){
+    public Queue addressCreateService() {
         return new Queue(RabbitConstant.addressCreateServiceQueue, false);
     }
 
     @Bean
-    public Queue appealReadService(){
+    public Queue appealReadService() {
         return new Queue(RabbitConstant.addressAppealIsRead, false);
-    }
-    @Bean
-    public DirectExchange exchange(){
-         return new DirectExchange(RabbitConstant.exchange);
     }
 
     @Bean
-    public Binding binding(Queue addressCreateDB, DirectExchange exchange){
+    public DirectExchange exchange() {
+        return new DirectExchange(RabbitConstant.exchange);
+    }
+
+    @Bean
+    public Binding binding(Queue addressCreateDB, DirectExchange exchange) {
         return BindingBuilder
                 .bind(addressCreateDB)
                 .to(exchange)
@@ -48,7 +49,7 @@ public class RabbitMQConfig {
 
 
     @Bean
-    public MessageConverter jsonMessageConverter(ObjectMapper mapper){
+    public MessageConverter jsonMessageConverter(ObjectMapper mapper) {
         return new Jackson2JsonMessageConverter(mapper);
     }
 
@@ -56,7 +57,6 @@ public class RabbitMQConfig {
     public SimpleRabbitListenerContainerFactory jsaFactory(ConnectionFactory connectionFactory,
                                                            SimpleRabbitListenerContainerFactoryConfigurer configurer) {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
-        configurer.configure(factory, connectionFactory);
 
         ObjectMapper mapper =
                 new ObjectMapper()
@@ -66,7 +66,9 @@ public class RabbitMQConfig {
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         mapper.setDateFormat(new StdDateFormat());
 
+        configurer.configure(factory, connectionFactory);
         factory.setMessageConverter(jsonMessageConverter(mapper));
+
         return factory;
     }
 }

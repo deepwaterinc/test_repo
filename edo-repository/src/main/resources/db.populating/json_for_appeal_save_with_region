@@ -1,0 +1,67 @@
+
+{
+    "annotation": "Some annotation",
+    "signer": [
+        {
+            "id": 1
+        }
+    ],
+    "creator": {
+        "id": 2
+    },
+    "addressee": [
+        {
+            "id": 3
+        }
+    ],
+    "nomenclature": {
+        "id": 1,
+        "template":"%ЧИС%ГОД-%ЗНАЧ/2",
+        "currentValue":1,
+        "index": "СОГЛ"
+    },
+    "authors": [
+        {
+            "firstName": "Дмитрий",
+            "lastName": "Рейн",
+            "middleName": "Константинович",
+            "address": "Address",
+            "snils": "88012234682",
+            "mobilePhone": "79776020338",
+            "email": "room083@gmail.com",
+            "employment": "UNEMPLOYED",
+            "fioDative": "Рейну Дмитрию Константиновичу",
+            "fioGenitive": "Рейна Дмитрия Константиновича",
+            "fioNominative": "Дмитрий Константинович Рейн"
+        }
+    ],
+    "file": [
+        {
+            "id":1
+        }
+    ],
+    "question": [
+        {
+            "id": null,
+            "summary" : "summary",
+            "theme": {
+                "id":10
+            }
+        }
+    ],
+    "appealStatus": null,
+    "sendingMethod": "BY_EMAIL",
+    "answeringMethod": "BY_EMAIL",
+        "region": {
+            "externalId": "31",
+    "regionName": "Saint-Petersburg",
+    "archivedDate": null,
+    "quantity": "33",
+    "federalDistrict": {
+        "federalDistrictName": "LO",
+        "website": "www"
+    },
+    "numberOfPrimaryBranches": "3",
+    "numberOfLocalBranches":   "2"
+    }
+}

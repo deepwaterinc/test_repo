@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author Хафизов Ильмир
@@ -27,6 +25,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final NotificationRepository notificationRepository;
     private final NotificationMapper mapper;
 
+
     /**
      * Сохранение оповещений в БД
      *
@@ -35,7 +34,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void save(NotificationDto notification) {
-        notificationRepository.saveAndFlush(mapper.toEntity(notification));
+        notificationRepository.save(mapper.toEntity(notification));
     }
 
     /**

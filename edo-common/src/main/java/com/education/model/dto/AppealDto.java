@@ -3,9 +3,10 @@ package com.education.model.dto;
 import com.education.model.enumEntity.EnumAppealStatus;
 import com.education.model.enumEntity.EnumWayToAnswer;
 import com.education.model.enumEntity.EnumWayToReceive;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import jdk.jfr.DataAmount;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -66,4 +67,6 @@ public class AppealDto {
     @ApiModelProperty("Способ получения ответа на обращение")
     private EnumWayToAnswer answeringMethod;
 
+    @ApiModelProperty("ID региона, связанного с обращением")
+    private RegionDto region;
 }

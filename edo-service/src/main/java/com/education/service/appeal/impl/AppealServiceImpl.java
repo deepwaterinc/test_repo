@@ -10,6 +10,7 @@ import com.education.model.util.exceptions.AppealNotValidException;
 import com.education.service.appeal.AppealService;
 import com.education.service.nomenclature.NomenclatureService;
 import com.education.service.question.QuestionService;
+import com.education.service.region.RegionService;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,8 @@ public class AppealServiceImpl implements AppealService {
     private final QuestionService questionService;
 
     private final AuthorService authorService;
+
+    private final RegionService regionService;
 
     private final RestTemplate TEMPLATE;
 
@@ -77,6 +80,14 @@ public class AppealServiceImpl implements AppealService {
                 .map(ResponseEntity::getBody).toList();
         var savedQuestions = appealDto.getQuestion()
                 .stream().map(questionService::save).toList();
+        var savedRegions = appealDto.getRegion();
+
+
+
+
+        regionService.save(savedRegions);
+        appealDto.setRegion(savedRegions);
+
         appealDto.setAuthors(savedAuthors);
         appealDto.setQuestion(savedQuestions);
         final String NUMBER = nomenclatureService
