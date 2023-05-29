@@ -42,20 +42,18 @@
     ],
     "question": [
         {
-            "id": null,
             "summary" : "summary",
             "theme": {
                 "id":10
             }
         }
     ],
-    "appealStatus": null,
     "sendingMethod": "BY_EMAIL",
     "answeringMethod": "BY_EMAIL",
         "region": {
+        "id":1,
             "externalId": "31",
     "regionName": "Saint-Petersburg",
-    "archivedDate": null,
     "quantity": "33",
     "federalDistrict": {
         "id":1,
