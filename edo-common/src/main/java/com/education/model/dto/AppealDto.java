@@ -28,7 +28,6 @@ public class AppealDto {
     @ApiModelProperty("Дата создания обращения")
     private ZonedDateTime creationDate;
 
-    @JsonSerialize(using = ZonedDateTimeSerializer.class)
     @ApiModelProperty("Дата архивирования обращения")
     private ZonedDateTime archivedDate;
 

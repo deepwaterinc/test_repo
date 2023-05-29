@@ -131,7 +131,7 @@ public class Appeal extends BaseEntity {
     /**
      * Связь Region с Appeal, обращение может быть создано для определенного региона
      */
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "region_id")
     private Region region;
 

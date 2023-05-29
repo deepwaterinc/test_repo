@@ -1,0 +1,5 @@
+FROM openjdk:17-alpine
+ADD /target/edo-repository-0.0.1.jar repository.jar
+ENTRYPOINT ["java","-jar","repository.jar"]
+
+#Тут ничего не нажимаем, переходим в файл docker-compose

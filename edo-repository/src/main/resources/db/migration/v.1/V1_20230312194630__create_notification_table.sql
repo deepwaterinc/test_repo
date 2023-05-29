@@ -8,3 +8,4 @@ create table if not exists notification
 comment on column notification.id is 'id';
 comment on column notification.employee_id is 'Id работника, для которого уведомление';
 comment on column notification.notification_name is 'Тип оповещения';
+

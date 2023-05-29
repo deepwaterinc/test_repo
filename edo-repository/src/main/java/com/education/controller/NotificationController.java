@@ -1,7 +1,6 @@
 package com.education.controller;
 
 
-import com.education.entity.Notification;
 import com.education.model.dto.NotificationDto;
 import com.education.service.notification.NotificationService;
 import io.swagger.annotations.ApiModel;
@@ -11,7 +10,6 @@ import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
