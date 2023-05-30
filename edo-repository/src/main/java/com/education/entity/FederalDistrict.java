@@ -1,11 +1,11 @@
 package com.education.entity;
 
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
-import java.util.List;
 
 @SuperBuilder
 @NoArgsConstructor
@@ -16,12 +16,6 @@ import java.util.List;
 @Entity
 @Table(name = "federal_district")
 public class FederalDistrict extends BaseEntity {
-
-    /**
-     * Связь федерального округа и региона
-     */
-    @OneToMany(cascade = CascadeType.PERSIST)
-    private List<Region> region;
     /**
      * Название федерального округа
      */
