@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 
 @ApiModel("Класс RegionDto, dto для класса Region.class")
 @NoArgsConstructor
@@ -15,8 +14,8 @@ import java.util.List;
 @Setter
 @ToString
 public class RegionDto {
-    @ApiModelProperty("Связь обращения и региона")
-    private List<AppealDto> appeal;
+    @ApiModelProperty("Идентификатор")
+    private Long id;
     @ApiModelProperty("Идентификатор региона из внешних систем")
     private String externalId;
     @ApiModelProperty("Название региона")

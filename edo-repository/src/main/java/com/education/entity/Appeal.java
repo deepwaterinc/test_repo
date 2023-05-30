@@ -4,7 +4,10 @@ import com.education.model.enumEntity.EnumAppealStatus;
 import com.education.model.enumEntity.EnumWayToAnswer;
 import com.education.model.enumEntity.EnumWayToReceive;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.ZonedDateTime;
@@ -134,5 +137,4 @@ public class Appeal extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "region_id")
     private Region region;
-
 }

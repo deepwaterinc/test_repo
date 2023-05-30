@@ -5,6 +5,6 @@ import com.education.model.dto.NotificationDto;
 import com.education.util.Mapper.Mappable;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = EmployeeMapper.class)
 public interface NotificationMapper extends Mappable<Notification, NotificationDto> {
 }

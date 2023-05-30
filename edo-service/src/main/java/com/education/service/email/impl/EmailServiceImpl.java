@@ -7,20 +7,11 @@ import com.education.model.dto.NotificationDto;
 import com.education.model.enumEntity.EnumNotification;
 import com.education.service.email.EmailService;
 import com.education.service.notification.NotificationService;
-import com.netflix.appinfo.InstanceInfo;
-import com.netflix.discovery.EurekaClient;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.http.HttpHost;
 import org.apache.logging.log4j.Level;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -41,6 +32,7 @@ public class EmailServiceImpl implements EmailService {
 
         var notificationDto = new NotificationDto();
         notificationDto.setEnumNotification(EnumNotification.EMAIL);
+        notificationDto.setEmployee(EmployeeDto.builder().id(1L).build());
         notificationService.save(notificationDto);
 
         log.log(Level.INFO, "Отправлен запрос в очередь по рассылке оповещений");
