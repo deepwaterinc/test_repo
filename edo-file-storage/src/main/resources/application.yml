@@ -1,14 +1,14 @@
 security:
   enabled: false
 spring:
+#  profiles:
+#    include: security
   application:
     name: edo-file-storage
 server:
   port: 0
 eureka:
   client:
-    registerWithEureka: false
-    fetchRegistry: false
     serviceUrl:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
   instance:

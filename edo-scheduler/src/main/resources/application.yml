@@ -1,6 +1,8 @@
 security:
   enabled: false
 spring:
+#  profiles:
+#    include: security
   application:
     name: edo-scheduler
 server:
