@@ -1,30 +1,27 @@
 package com.education.controller;
 
-import com.education.client.FileRestTemplateClient;
+import com.education.model.dto.FilePoolDto;
 import com.education.service.file.FileService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-
-
+@Log
 @ApiOperation("Upload file API")
-@Log4j2
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/rest/file")
 public class FileUploadController {
-
     final private FileService fileService;
-
-    final private FileRestTemplateClient restTemplateClient;
 
     @ApiOperation("Скачать файл")
     @ApiResponses(value = {
@@ -32,17 +29,11 @@ public class FileUploadController {
             @ApiResponse(code = 404, message = "Файл не найден")
     })
     @PostMapping
-    public ResponseEntity<String> uploadFile(@RequestPart("file") MultipartFile multipartFile) {
-        log.info("Получен запрос на скачивание файла");
+    public ResponseEntity<FilePoolDto> uploadFile(@RequestPart("file") MultipartFile multipartFile) {
+        log.info("Получен запрос на закачивание файла");
         if (multipartFile.isEmpty()) {
             return new ResponseEntity("please select a file!", HttpStatus.NOT_FOUND);
         }
-        fileService.uploadFile(multipartFile);
-        restTemplateClient.convertFile(multipartFile);
-        log.info("Файл успешно сохранен");
-        return new ResponseEntity(multipartFile.getOriginalFilename(), HttpStatus.OK);
-
-
+        return ResponseEntity.ok().body(fileService.uploadFile(multipartFile));
     }
-
 }

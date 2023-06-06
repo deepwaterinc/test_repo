@@ -45,9 +45,9 @@ values (now(), 'Осы залетают в окно', 6);
 
 -- Заполнение таблицы resolution тестовыми данными
 
-insert into resolution (creation_date, archived_date, last_action_date, resolution_name, creator_id, signer_id,
+insert into resolution (creation_date, resolution_name, creator_id, signer_id,
                         curator_id, question_id)
-values (null, null, null, 'Запрос', '1', '1', '1', '1');
+values (now(), 'Запрос', '1', '1', '1', '1');
 
 -- Заполнение таблицы file_pool тестовыми данными
 
@@ -80,3 +80,5 @@ VALUES ('социальные льготы для ветеранов', '3.4');
 UPDATE theme
 SET parent_id = (SELECT theme.id FROM theme where code = '3')
 where code in ('3.4');
+
+

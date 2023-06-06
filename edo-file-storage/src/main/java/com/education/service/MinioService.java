@@ -1,11 +1,10 @@
 package com.education.service;
 
-import com.education.model.dto.FileDto;
-
 import java.io.InputStream;
+import java.util.UUID;
+
 
 public interface MinioService {
-    public FileDto uploadFile(FileDto request);
-    public InputStream getObject(String filename);
-
+     UUID uploadFile(byte[] request);
+    InputStream getObject(String filename);
 }

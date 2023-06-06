@@ -1,10 +1,9 @@
 package com.education.service.file;
 
-
+import com.education.model.dto.FilePoolDto;
 import org.springframework.web.multipart.MultipartFile;
 
 
 public interface FileService {
-
-    String uploadFile(MultipartFile multipartFile);
+    FilePoolDto uploadFile(MultipartFile multipartFile);
 }

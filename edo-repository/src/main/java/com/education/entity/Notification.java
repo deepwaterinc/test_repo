@@ -16,15 +16,14 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @ToString
 @SuperBuilder
-@EqualsAndHashCode
 @Table(name = "notification")
 public class Notification extends BaseEntity {
 
     /**
      * Id работника, для которого уведомление
      */
-
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Employee.class)
+    @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private Employee employee;
 
     /**

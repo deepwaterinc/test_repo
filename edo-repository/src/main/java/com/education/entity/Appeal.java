@@ -4,7 +4,10 @@ import com.education.model.enumEntity.EnumAppealStatus;
 import com.education.model.enumEntity.EnumWayToAnswer;
 import com.education.model.enumEntity.EnumWayToReceive;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.ZonedDateTime;
@@ -127,4 +130,11 @@ public class Appeal extends BaseEntity {
     @Column(name = "way_to_answer")
     @Enumerated(EnumType.STRING)
     private EnumWayToAnswer answerMethod;
+
+    /**
+     * Связь Region с Appeal, обращение может быть создано для определенного региона
+     */
+    @ManyToOne
+    @JoinColumn(name = "region_id")
+    private Region region;
 }

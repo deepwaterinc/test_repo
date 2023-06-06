@@ -20,7 +20,7 @@ import java.util.List;
 public class EmployeeServiceImpl implements EmployeeService {
 
     /**
-     * Объект класса-репозитория для сущнотси Employee
+     * Объект класса-репозитория для сущности Employee
      */
     private final EmployeeRepository employeeRepository;
 
@@ -29,7 +29,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param emp сохраняемый объект Employee
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void save(Employee emp) {
         emp.setCreationDate(ZonedDateTime.now(ZoneId.of("Europe/Moscow")));
         employeeRepository.save(emp);
