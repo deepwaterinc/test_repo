@@ -8,7 +8,7 @@ import lombok.experimental.SuperBuilder;
 import java.time.ZonedDateTime;
 
 /**
- * Представляет Департамент, чтобы это не значило.
+ * Представляет Департамент, Компанию, где работает работник.
  *
  * @author Сергей Иваненко
  * @version 1.0
@@ -47,7 +47,7 @@ public class Department extends BaseEntity {
      * Внешний идентификатор
      */
     @Column(name = "external_id")
-    private Long externalId;
+    private String externalId;
 
     /**
      * Номер телефона

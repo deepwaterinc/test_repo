@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import java.time.ZonedDateTime;
+import java.util.Objects;
 
 @ApiModel("Dto для Department.class")
 @Getter
@@ -42,9 +43,9 @@ public class DepartmentDto {
     @ApiModelProperty(
             notes = "Ключ внешней таблицы",
             value = "external_id",
-            dataType = "Long"
+            dataType = "String"
     )
-    private Long externalId;
+    private String externalId;
 
     @ApiModelProperty(
             notes = "Телефонный номер",
@@ -69,4 +70,18 @@ public class DepartmentDto {
             dataType = "ZonedDateTime"
     )
     private ZonedDateTime archivedDate;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DepartmentDto that = (DepartmentDto) o;
+        return externalId.equals(that.externalId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(externalId);
+    }
+
 }
