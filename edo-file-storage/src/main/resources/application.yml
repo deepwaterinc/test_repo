@@ -1,5 +1,10 @@
 security:
   enabled: false
+minio:
+    accessKey: minioadmin
+    secretKey: minioadmin
+    endpoint: http://localhost:9000
+    bucket: test
 spring:
   application:
     name: edo-file-storage
@@ -7,14 +12,8 @@ server:
   port: 0
 eureka:
   client:
-    registerWithEureka: false
-    fetchRegistry: false
-    serviceUrl:
+    service-url:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
   instance:
     preferIpAddress: true
-minio:
-  accessKey: minioadmin
-  secretKey: minioadmin
-  endpoint: http://localhost:9000
-  bucket: test
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${spring.application.instance_id:${random.value}}
