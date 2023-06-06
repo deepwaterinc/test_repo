@@ -2,7 +2,7 @@ security:
   enabled: false
 spring:
 #  profiles:
-  #    include: security
+#      include: security
   jpa:
     properties:
       hibernate:
