@@ -45,4 +45,7 @@ public class ResolutionDto {
     @ApiModelProperty("Вопрос, к которому относится резолюция")
     private QuestionDto question;
 
+    @ApiModelProperty("Список дедлайнов")
+    private List<DeadlineDto> deadlines;
+
 }

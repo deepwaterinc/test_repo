@@ -12,5 +12,6 @@ public interface ResolutionMapper extends Mappable<Resolution, ResolutionDto> {
     //создано для ухода от бесконечного цикла при маппинге
     @Override
     @Mapping(target = "question.resolutions", ignore = true)
+    @Mapping(target = "deadlines.resolution", ignore = true)
     ResolutionDto toDto(Resolution resolution);
 }
