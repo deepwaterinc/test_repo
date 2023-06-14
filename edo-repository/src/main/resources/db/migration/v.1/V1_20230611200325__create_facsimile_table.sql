@@ -1,9 +1,9 @@
 create table if not exists facsimile
 (
     id           bigserial not null primary key, --id факсимиле
-    employee     bigserial,                      --Id Работника
-    department   bigserial,                      --Id департамента
-    file         bigserial,                      --id файла
+    employee     bigint,                         --Id Работника
+    department   bigint,                         --Id департамента
+    file         bigint,                         --id файла
     isArchived   boolean                         --Признак архивности
 );
 
