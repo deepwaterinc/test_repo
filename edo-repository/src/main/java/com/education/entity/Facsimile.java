@@ -11,7 +11,8 @@ import lombok.experimental.SuperBuilder;
  * @author Никита Бадеев
  * Класс, описывающий сущность факсимиле
  */
-
+@EqualsAndHashCode(callSuper = true)
+@Data
 @Getter
 @Setter
 @Entity
