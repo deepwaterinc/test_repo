@@ -21,7 +21,7 @@ public class Deadline extends BaseEntity {
     /**
      * Дата дедлайна
      */
-    @Column(name = "date")
+    @Column(name = "deadline_date")
     private ZonedDateTime date;
 
     /**

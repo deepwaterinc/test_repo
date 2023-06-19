@@ -23,17 +23,15 @@ public class DeadlineServiceImpl implements DeadlineService {
 
     private RestTemplate rest;
     private EurekaClient client;
-    private final String BASE_URL = "/api/repository/deadline/";
+    private final String BASE_URL = "/api/repository/deadline";
     private final String HTTP = "http";
-
 
     /**
      * Сохранение нового дедлайна
      */
-
     @Override
     public DeadlineDto save(DeadlineDto deadlineDto) {
-        var request = new RequestEntity(deadlineDto, HttpMethod.POST, getUri(""));
+        var request = new RequestEntity(deadlineDto, HttpMethod.POST, getUri("/"));
 
         var response = rest.exchange(request, DeadlineDto.class);
         if (!response.getStatusCode().is2xxSuccessful()) {
@@ -42,13 +40,12 @@ public class DeadlineServiceImpl implements DeadlineService {
         return response.getBody();
     }
 
-
     /**
      * Обновление дедлайна, установка комментария
      */
     @Override
     public DeadlineDto update(DeadlineDto deadlineDto) {
-        var request = new RequestEntity(deadlineDto, HttpMethod.PUT, getUri(""));
+        var request = new RequestEntity(deadlineDto, HttpMethod.PUT, getUri("/"));
 
         var response = rest.exchange(request, DeadlineDto.class);
         if (!response.getStatusCode().is2xxSuccessful()) {
@@ -63,7 +60,7 @@ public class DeadlineServiceImpl implements DeadlineService {
 
     @Override
     public void delete(Long id) {
-        var uri = getUri(Long.toString(id));
+        var uri = getUri("/" + id);
         rest.delete(uri);
     }
 
@@ -73,7 +70,7 @@ public class DeadlineServiceImpl implements DeadlineService {
 
     @Override
     public DeadlineDto findById(Long id) {
-        var uri = getUri(Long.toString(id));
+        var uri = getUri("/" + id);
         try {
             return rest.getForObject(uri, DeadlineDto.class);
         } catch (Exception e) {
@@ -87,17 +84,19 @@ public class DeadlineServiceImpl implements DeadlineService {
 
     @Override
     public List<DeadlineDto> findAllById(List<Long> ids) {
-        var uri = getUri("all");
-        var request = new RequestEntity<>(ids, HttpMethod.POST, uri);
-        try {
-            var response
-                    = rest.exchange(request, new ParameterizedTypeReference<List<DeadlineDto>>() {
-            });
-            return response.getBody();
-        } catch (Exception e) {
-            return null;
+        InstanceInfo instance = getInstance();
+
+        var request = new RequestEntity(null, HttpMethod.GET, getUri(instance, "", ids));
+
+        var response = rest.exchange(request, new ParameterizedTypeReference<List<DeadlineDto>>() {
+        });
+
+        if (!response.getStatusCode().is2xxSuccessful()) {
+            throw new RuntimeException("Не удалось найти дедлайны");
         }
+        return response.getBody();
     }
+
 
     /**
      * Метод для получения URI.
@@ -110,6 +109,19 @@ public class DeadlineServiceImpl implements DeadlineService {
                 .host(instance.getHostName())
                 .port(instance.getPort())
                 .buildAndExpand(path)
+                .toUri();
+    }
+
+    /**
+     * Метод для получения URI.
+     */
+    private URI getUri(InstanceInfo instance, String path, List<Long> ids) {
+        return UriComponentsBuilder.fromPath(BASE_URL + path)
+                .scheme(HTTP)
+                .host(instance.getHostName())
+                .port(instance.getPort())
+                .queryParam("ids", ids)
+                .build()
                 .toUri();
     }
 

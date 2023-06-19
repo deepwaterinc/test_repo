@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -57,8 +58,8 @@ public class DeadlineServiceImpl implements DeadlineService {
     @Transactional(readOnly = true, rollbackFor = Exception.class)
     @Override
     public DeadlineDto findById(Long id) {
-        Deadline deadline = deadlineRepository.findById(id).orElse(null);
-        return deadline != null ? mapper.toDto(deadline) : null;
+        Optional<Deadline> deadline = deadlineRepository.findById(id);
+        return deadline.map(mapper::toDto).orElse(null);
     }
 
     /**
