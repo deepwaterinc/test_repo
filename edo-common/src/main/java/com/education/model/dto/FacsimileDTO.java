@@ -19,6 +19,9 @@ import java.util.Objects;
 @Builder
 public class FacsimileDTO {
 
+    @ApiModelProperty("Id Факсимиле")
+    private Long id;
+
     @ApiModelProperty("Связь с работником")
     private EmployeeDto employee;
 
@@ -36,7 +39,7 @@ public class FacsimileDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FacsimileDTO that = (FacsimileDTO) o;
-        return isArchived == that.isArchived && Objects.equals(employee, that.employee) && Objects.equals(department, that.department) && Objects.equals(file, that.file);
+        return Objects.equals(id, that.id);
     }
 
     @Override

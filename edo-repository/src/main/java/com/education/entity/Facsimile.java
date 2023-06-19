@@ -1,9 +1,6 @@
 package com.education.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -11,8 +8,6 @@ import lombok.experimental.SuperBuilder;
  * @author Никита Бадеев
  * Класс, описывающий сущность факсимиле
  */
-@EqualsAndHashCode(callSuper = true)
-@Data
 @Getter
 @Setter
 @Entity
@@ -26,14 +21,14 @@ public class Facsimile extends BaseEntity {
     /**
      * Связь с работником
      */
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
     /**
      * Связь с департаментом
      */
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "department_id")
     private Department department;
 

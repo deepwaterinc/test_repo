@@ -1,10 +1,10 @@
 create table if not exists facsimile
 (
-    id           bigserial not null primary key, --id факсимиле
-    employee     bigint,                         --Id Работника
-    department   bigint,                         --Id департамента
-    file         bigint,                         --id файла
-    isArchived   boolean                         --Признак архивности
+    id           bigserial not null primary key,    --id факсимиле
+    employee     bigint not null,                   --Id Работника
+    department   bigint not null,                   --Id департамента
+    file         bigint not null,                   --id файла
+    isArchived   boolean not null default false     --Признак архивности
 );
 
 comment on column facsimile.id is 'id факсимиле';
