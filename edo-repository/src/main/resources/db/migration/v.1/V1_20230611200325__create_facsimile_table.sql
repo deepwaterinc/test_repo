@@ -1,9 +1,9 @@
 create table if not exists facsimile
 (
     id              bigserial not null primary key,                                          --id факсимиле
-    employee_id     bigint not null references edo_db.edo.employee_id_seq,                   --Id Работника
-    department_id   bigint not null references edo_db.edo.department_id_seq,                 --Id департамента
-    file_id         bigint not null references edo_db.edo.file_pool_id_seq,                  --id файла
+    employee_id     bigint not null references edo_db.edo.employee,                   --Id Работника
+    department_id   bigint not null references edo_db.edo.department,                 --Id департамента
+    file_id         bigint not null references edo_db.edo.file_pool,                  --id файла
     isArchived      boolean not null default false                                           --Признак архивности
 );
 
