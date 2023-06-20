@@ -1,14 +1,14 @@
 create table if not exists facsimile
 (
-    id           bigserial not null primary key,    --id факсимиле
-    employee     bigint not null,                   --Id Работника
-    department   bigint not null,                   --Id департамента
-    file         bigint not null,                   --id файла
-    isArchived   boolean not null default false     --Признак архивности
+    id              bigserial not null primary key,                                          --id факсимиле
+    employee_id     bigint not null references edo_db.edo.employee_id_seq,                   --Id Работника
+    department_id   bigint not null references edo_db.edo.department_id_seq,                 --Id департамента
+    file_id         bigint not null references edo_db.edo.file_pool_id_seq,                  --id файла
+    isArchived      boolean not null default false                                           --Признак архивности
 );
 
 comment on column facsimile.id is 'id факсимиле';
-comment on column facsimile.employee is 'Id работника';
-comment on column facsimile.department is 'Id департамента';
-comment on column facsimile.file is 'Id файла';
+comment on column facsimile.employee_id is 'Id работника';
+comment on column facsimile.department_id is 'Id департамента';
+comment on column facsimile.file_id is 'Id файла';
 comment on column facsimile.isArchived is 'Факсимиле архивен';

@@ -44,6 +44,6 @@ public class FacsimileDTO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(employee, department, file, isArchived);
+        return Objects.hash(id);
     }
 }
