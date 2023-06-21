@@ -6,7 +6,7 @@ import com.education.util.Mapper.Mappable;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = DeadlineMapper.class)
 public interface ResolutionMapper extends Mappable<Resolution, ResolutionDto> {
 
     //создано для ухода от бесконечного цикла при маппинге

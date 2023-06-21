@@ -4,11 +4,13 @@ import com.education.model.enumEntity.EnumResolution;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+
 import java.time.ZonedDateTime;
 import java.util.List;
 
 /**
  * POJO класс, содержащий информацию о датах и работниках.
+ *
  * @author Dmitrii Ermolenko
  */
 @Entity
@@ -48,21 +50,21 @@ public class Resolution extends BaseEntity {
     /**
      * Работник создавший резолюцию
      */
-    @OneToOne(fetch=FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id")
     private Employee creator;
 
     /**
      * Работник подписывающий документ
      */
-    @OneToOne(fetch=FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "signer_id")
     private Employee signer;
 
     /**
      * Работники выполняющие решение
      */
-    @OneToMany(fetch=FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "resolutions_employees",
             joinColumns = @JoinColumn(name = "resolution_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))
@@ -71,7 +73,7 @@ public class Resolution extends BaseEntity {
     /**
      * Работник курирующий работу
      */
-    @OneToOne(fetch=FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "curator_id")
     private Employee curator;
 
@@ -82,5 +84,12 @@ public class Resolution extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
     private Question question;
+
+    /**
+     * Дедлайн, который относится к резолюции
+     * У одной резолюции может быть несколько дедлайнов
+     */
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "resolution")
+    private List<Deadline> deadlines;
 
 }
