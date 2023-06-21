@@ -1,10 +1,10 @@
 create table if not exists facsimile
 (
-    id              bigserial not null primary key,                                          --id факсимиле
-    employee_id     bigint not null references edo_db.edo.employee,                   --Id Работника
-    department_id   bigint not null references edo_db.edo.department,                 --Id департамента
-    file_id         bigint not null references edo_db.edo.file_pool,                  --id файла
-    isArchived      boolean not null default false                                           --Признак архивности
+    id              bigserial not null primary key,                        --id факсимиле
+    employee_id     bigint not null references employee (id),                   --Id Работника
+    department_id   bigint not null references department (id),                 --Id департамента
+    file_id         bigint not null references file_pool (id),                  --id файла
+    isArchived      boolean not null default false                         --Признак архивности
 );
 
 comment on column facsimile.id is 'id факсимиле';

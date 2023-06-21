@@ -22,26 +22,26 @@ public class Facsimile extends BaseEntity {
      * Связь с работником
      */
     @ManyToOne
-    @JoinColumn(name = "employee_id")
+    @Column(name = "employee_id")
     private Employee employee;
 
     /**
      * Связь с департаментом
      */
     @ManyToOne
-    @JoinColumn(name = "department_id")
+    @Column(name = "department_id")
     private Department department;
 
     /**
      * Связь с файлом
      */
     @OneToOne
-    @JoinColumn(name = "file_id")
+    @Column(name = "file_id")
     private FilePool file;
 
     /**
      * Архивирован ли факсимиле
      */
-    @JoinColumn(name = "isArchived")
+    @Column(name = "isArchived")
     private boolean isArchived;
 }
