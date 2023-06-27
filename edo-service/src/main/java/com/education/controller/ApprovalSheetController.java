@@ -16,16 +16,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * @author Ivan Chursinov
- */
-
 @ApiModel("Approval Sheet API")
 @Log4j2
 @RestController
-@RequestMapping("api/repository/approval")
+@RequestMapping("api/service/approval")
 @RequiredArgsConstructor
-public class ApprovalSheetRestController {
+public class ApprovalSheetController {
 
     private final ApprovalSheetService approvalSheetService;
 
@@ -71,7 +67,7 @@ public class ApprovalSheetRestController {
     @ApiOperation("Поиск списка Листов согласования по их ID")
     @GetMapping
     public List<ApprovalSheetDto> findAllById(@RequestParam("ids") List<Long> ids) {
-        log.info("Получен запрос на получение листов согласования для набора id = {}",ids);
+        log.info("Получен запрос на получение листов согласования для набора id = {}", ids);
         return approvalSheetService.findAllById(ids);
     }
 
@@ -94,8 +90,7 @@ public class ApprovalSheetRestController {
     @Operation(summary = "Выдает неархивные листы согласования по списку id")
     @GetMapping("/notArchived")
     public ResponseEntity<List<ApprovalSheetDto>> findAllByIdNotArchived(@RequestParam(value = "ids", required = false) List<Long> ids) {
-        log.info("Получен запрос на получение неархивных листов согласования для набора id = {}",ids);
+        log.info("Получен запрос на получение неархивных листов согласования для набора id = {}", ids);
         return new ResponseEntity<>(approvalSheetService.findAllByIdNotArchived(ids), HttpStatus.OK);
     }
-
 }
