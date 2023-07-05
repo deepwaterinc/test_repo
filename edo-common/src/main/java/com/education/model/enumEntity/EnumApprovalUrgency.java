@@ -1,11 +1,17 @@
 package com.education.model.enumEntity;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * Срочность рассмотрения обращения.
  *
  * @author Ivan Chursinov
  */
 
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
 public enum EnumApprovalUrgency {
 
     COMMON("Обычная"),
@@ -14,11 +20,4 @@ public enum EnumApprovalUrgency {
 
     private final String approvalUrgency;
 
-    EnumApprovalUrgency(String approvalUrgency) {
-        this.approvalUrgency = approvalUrgency;
-    }
-
-    public String getValue() {
-        return approvalUrgency;
-    }
 }

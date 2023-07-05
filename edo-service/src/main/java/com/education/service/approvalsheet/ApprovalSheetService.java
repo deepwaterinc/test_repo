@@ -4,10 +4,6 @@ import com.education.model.dto.ApprovalSheetDto;
 
 import java.util.List;
 
-/**
- * @author Ivan Chursinov
- */
-
 public interface ApprovalSheetService {
 
     ApprovalSheetDto save(ApprovalSheetDto approvalSheet);
@@ -21,5 +17,4 @@ public interface ApprovalSheetService {
     ApprovalSheetDto findByIdNotArchived(Long id);
 
     List<ApprovalSheetDto> findAllByIdNotArchived(List<Long> ids);
-
 }

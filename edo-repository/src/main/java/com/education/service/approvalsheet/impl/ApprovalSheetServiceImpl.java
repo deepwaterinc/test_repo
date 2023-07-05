@@ -9,8 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -31,7 +30,6 @@ public class ApprovalSheetServiceImpl implements ApprovalSheetService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ApprovalSheetDto save(ApprovalSheetDto approvalSheetDto) {
-        approvalSheetDto.setCreationDate(ZonedDateTime.now(ZoneId.of("Europe/Moscow")));
         return mapper.toDto(approvalSheetRepository.save(mapper.toEntity(approvalSheetDto)));
     }
 
@@ -59,6 +57,19 @@ public class ApprovalSheetServiceImpl implements ApprovalSheetService {
     }
 
     /**
+     * Предоставляет список ApprovalSheetDto листов согласования из БД по id
+     * @param ids List of id
+     * @return List of ApprovalSheetDto
+     */
+
+    @Transactional(readOnly = true, rollbackFor = Exception.class)
+    @Override
+    public List<ApprovalSheetDto> findAllById(List<Long> ids) {
+        List<ApprovalSheet> approvalSheets = approvalSheetRepository.findAllById(ids);
+        return approvalSheets.isEmpty() ? null : mapper.toDto(approvalSheets);
+    }
+
+    /**
      * Метод для поиска листа согласования по id, не находящегося в архиве.
      * @param id
      */
@@ -71,4 +82,16 @@ public class ApprovalSheetServiceImpl implements ApprovalSheetService {
                 .orElse(null);
     }
 
+    /**
+     * Предоставляет список не заархивированных ApprovalSheetDto листов согласования из БД по id
+     * @param ids List of id
+     * @return List of ApprovalSheetDto
+     */
+
+    @Override
+    @Transactional(readOnly = true, rollbackFor = Exception.class)
+    public List<ApprovalSheetDto> findAllByIdNotArchived(List<Long> ids) {
+        List<ApprovalSheet> approvalSheets = approvalSheetRepository.findAllByIdNotArchived(ids);
+        return approvalSheets.isEmpty() ? null : mapper.toDto(approvalSheets);
+    }
 }
