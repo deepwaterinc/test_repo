@@ -7,6 +7,8 @@ spring:
     properties:
       hibernate:
         default_schema: edo
+        format_sql: true
+    show-sql: true
   flyway:
     enabled: true
     user: postgres #Should be changed (local database username)
